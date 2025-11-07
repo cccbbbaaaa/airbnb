@@ -1,0 +1,51 @@
+# Python 虚拟环境 / Python Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python 缓存文件 / Python Cache Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 数据文件（避免推送大型数据文件）/ Data Files (avoid pushing large data files)
+data/*.csv
+data/*.xlsx
+data/*.json
+data/*.parquet
+# 但保留数据字典等文档 / But keep data dictionary and other documentation
+!data/*.md
+!data/*.txt
+
+# IDE 配置文件 / IDE Configuration Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook 检查点 / Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# 输出文件 / Output Files
+output/
+charts/
+*.png
+*.jpg
+*.pdf
+
+# 日志文件 / Log Files
+*.log
+
+# 环境变量文件 / Environment Variables
+.env
+.env.local
+
+# 临时文件 / Temporary Files
+*.tmp
+*.temp
+
