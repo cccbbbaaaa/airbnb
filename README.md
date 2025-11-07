@@ -18,13 +18,8 @@ project/
 │   └── data dictionary.xlsx # 数据字典 / Data dictionary
 │
 ├── src/                     # 源代码目录 / Source code directory
-│   └── EDA/                 # 探索性数据分析脚本 / EDA scripts
-│       ├── Activity.py              # 房源活动分析 / Activity analysis
-│       ├── data clean.py           # 数据清洗 / Data cleaning
-│       ├── Description statistic.py # 描述性统计分析 / Descriptive statistics
-│       ├── License.py              # 许可证分析 / License analysis
-│       ├── Null value.py           # 缺失值检查 / Null value checking
-│       └── Top Hosts.py            # 顶级房东分析 / Top hosts analysis
+│   └── EDA/                 # 探索性数据分析 / EDA directory
+│       └── Airbnb_EDA.ipynb # 完整的EDA分析Notebook / Complete EDA analysis notebook
 │
 ├── charts/                  # 图表输出目录 / Charts output directory
 │   ├── occupancy_distribution.png      # 入住率分布图
@@ -44,6 +39,7 @@ project/
 ## 环境要求 / Requirements
 
 - Python 3.8+
+- Jupyter Notebook 或 JupyterLab（用于运行 Notebook）
 - 依赖包见 `requirements.txt`
 
 ## 安装步骤 / Installation
@@ -83,73 +79,107 @@ pip install -r requirements.txt
 
 ## 使用方法 / Usage
 
-### 运行单个分析脚本 / Run Individual Analysis Scripts
+### 运行 Jupyter Notebook / Run Jupyter Notebook
 
-在项目根目录下，进入 `src/EDA` 目录运行脚本：
+本项目使用 Jupyter Notebook 进行交互式数据分析。所有分析代码已整合在 `src/EDA/Airbnb_EDA.ipynb` 中。
+
+#### 方法一：使用 Jupyter Notebook（推荐）
 
 ```bash
 cd src/EDA
-
-# 运行房源活动分析 / Run activity analysis
-python Activity.py
-
-# 运行描述性统计分析 / Run descriptive statistics
-python "Description statistic.py"
-
-# 运行许可证分析 / Run license analysis
-python License.py
-
-# 检查缺失值 / Check null values
-python "Null value.py"
-
-# 分析顶级房东 / Analyze top hosts
-python "Top Hosts.py"
-
-# 执行数据清洗 / Perform data cleaning
-python "data clean.py"
+jupyter notebook Airbnb_EDA.ipynb
 ```
+
+#### 方法二：使用 JupyterLab
+
+```bash
+cd src/EDA
+jupyter lab Airbnb_EDA.ipynb
+```
+
+#### 方法三：使用 VS Code
+
+直接在 VS Code 中打开 `src/EDA/Airbnb_EDA.ipynb` 文件，确保已安装 Jupyter 扩展。
+
+### Notebook 结构说明 / Notebook Structure
+
+Notebook 包含以下分析模块，按顺序执行：
+
+1. **数据加载** / Data Loading - 读取和查看数据基本信息
+2. **缺失值检查** / Missing Value Check - 统计和识别缺失值
+3. **数据清洗** / Data Cleaning - 删除列、填充缺失值
+4. **数据基本信息描述** / Basic Data Information - 数据概览和统计描述
+5. **房源活动分析** / Activity Analysis - 入住率和平均价格分析
+6. **描述性统计分析** / Descriptive Statistics - 价格、房型、评论分布分析
+7. **许可证分析** / License Analysis - 许可证分类和分布
+8. **顶级房东分析** / Top Hosts Analysis - 房源数量排名
 
 ### 输出说明 / Output Description
 
-所有图表将自动保存到 `charts/` 目录下，文件格式为 PNG（300 DPI 高分辨率）。
+- 所有图表将自动保存到 `charts/` 目录下，文件格式为 PNG（300 DPI 高分辨率）
+- 图表会在 Notebook 中直接显示，同时保存到文件
+- 分析结果和统计信息会在 Notebook 中显示
 
-All charts will be automatically saved to the `charts/` directory in PNG format (300 DPI high resolution).
+All charts will be automatically saved to the `charts/` directory in PNG format (300 DPI high resolution). Charts are displayed in the notebook and saved to files simultaneously.
 
-## 脚本功能说明 / Script Functions
+## Notebook 分析模块说明 / Notebook Analysis Modules
 
-### 1. Activity.py - 房源活动分析
+`Airbnb_EDA.ipynb` 包含以下分析模块：
 
-- 计算平均入住天数
+### 1. 数据加载 / Data Loading
+
+- 读取 CSV 数据文件
+- 查看数据形状和基本信息
+- 预览前几行数据
+
+### 2. 缺失值检查 / Missing Value Check
+
+- 统计每个字段的缺失值数量
+- 识别需要处理的缺失值字段
+- 显示缺失值统计结果
+
+### 3. 数据清洗 / Data Cleaning
+
+- 删除 `neighbourhood_group` 列（全为空）
+- 填充缺失值：
+  - review 相关字段用 0 填充
+  - name 和 host_name 用 "blank_name" 填充
+  - license 字段用 0 填充
+
+### 4. 数据基本信息描述 / Basic Data Information
+
+- 显示数据结构和数据类型
+- 计算数值型字段的统计描述（均值、标准差、分位数等）
+
+### 5. 房源活动分析 / Activity Analysis
+
+- 计算平均入住天数（365 - availability_365）
 - 计算平均价格
 - 生成入住率分布直方图
 
-### 2. Description statistic.py - 描述性统计分析
+### 6. 描述性统计分析 / Descriptive Statistics
 
-- 价格分布分析
-- 房型分布分析
-- 评论数量分布分析
-- 不同房型的平均价格分析
-- 不同街区的平均价格分析
+- **价格分布分析**：价格直方图和统计描述
+- **房型分布分析**：房型占比饼图
+- **评论数量分布分析**：评论数直方图
+- **房型平均价格分析**：不同房型的平均价格柱状图
+- **街区平均价格分析**：不同街区的平均价格柱状图
 
-### 3. License.py - 许可证分析
+### 7. 许可证分析 / License Analysis
 
-- 许可证分类（已授权/豁免/未授权/待处理）
+- 许可证分类处理：
+  - Unlicensed（0值）
+  - Exempt（豁免）
+  - Licensed（0363开头）
+  - pending（其他）
 - 生成许可证分布饼图
+- 显示许可证分类统计
 
-### 4. Null value.py - 缺失值检查
+### 8. 顶级房东分析 / Top Hosts Analysis
 
-- 统计各字段的缺失值数量
-- 识别需要处理的缺失值字段
-
-### 5. Top Hosts.py - 顶级房东分析
-
-- 统计每个房东的房源数量
-- 按房源数量排序，显示前10名房东
-
-### 6. data clean.py - 数据清洗
-
-- 删除 `neighbourhood_group` 列
-- 填充缺失值（review 相关字段用 0，name 相关字段用 "blank_name"）
+- 使用交叉表统计每个房东的房型分布
+- 计算每个房东的总房源数
+- 按房源数量排序，显示前10名房东及其房型分布
 
 ## 数据说明 / Data Description
 
@@ -173,6 +203,29 @@ All charts will be automatically saved to the `charts/` directory in PNG format 
 ## 注意事项 / Notes
 
 1. **数据文件**: 由于数据文件较大，已通过 `.gitignore` 排除，不会推送到 Git 仓库。请确保在 `data/` 目录下放置相应的数据文件。
-2. **图表输出**: 所有图表自动保存到 `charts/` 目录，如果目录不存在会自动创建。
-3. **相对路径**: 所有脚本使用相对路径读取数据，确保在正确的目录下运行脚本。
+
+2. **图表输出**: 所有图表自动保存到 `charts/` 目录，如果目录不存在会自动创建。图表文件已通过 `.gitignore` 排除，可通过运行 Notebook 重新生成。
+
+3. **Notebook 路径**: Notebook 使用相对路径读取数据（`../../data/listings.csv`），请确保从 `src/EDA/` 目录打开 Notebook，或调整路径设置。
+
 4. **Python 版本**: 建议使用 Python 3.8 或更高版本。
+
+5. **Jupyter 安装**: 如果未安装 Jupyter，请运行 `pip install jupyter` 或 `pip install -r requirements.txt`。
+
+6. **执行顺序**: 建议按顺序执行 Notebook 中的所有单元格，因为后续分析依赖于前面的数据清洗步骤。
+
+7. **交互式分析**: Notebook 支持交互式分析，可以修改代码、重新运行单元格，方便探索性数据分析。
+
+## 更新日志 / Changelog
+
+### 2024 - v2.0
+- ✅ 将所有 Python 脚本整合到单个 Jupyter Notebook (`Airbnb_EDA.ipynb`)
+- ✅ 优化代码结构，按分析模块组织
+- ✅ 添加交互式数据分析支持
+- ✅ 更新项目文档和使用说明
+
+### 2024 - v1.0
+- ✅ 完成数据清洗模块
+- ✅ 完成探索性数据分析脚本
+- ✅ 实现图表自动保存功能
+- ✅ 创建项目文档
