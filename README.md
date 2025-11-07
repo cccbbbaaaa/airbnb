@@ -64,11 +64,13 @@ python3 -m venv venv
 ### 3. 激活虚拟环境 / Activate Virtual Environment
 
 **macOS/Linux:**
+
 ```bash
 source venv/bin/activate
 ```
 
 **Windows:**
+
 ```bash
 venv\Scripts\activate
 ```
@@ -116,11 +118,13 @@ All charts will be automatically saved to the `charts/` directory in PNG format 
 ## 脚本功能说明 / Script Functions
 
 ### 1. Activity.py - 房源活动分析
+
 - 计算平均入住天数
 - 计算平均价格
 - 生成入住率分布直方图
 
 ### 2. Description statistic.py - 描述性统计分析
+
 - 价格分布分析
 - 房型分布分析
 - 评论数量分布分析
@@ -128,24 +132,29 @@ All charts will be automatically saved to the `charts/` directory in PNG format 
 - 不同街区的平均价格分析
 
 ### 3. License.py - 许可证分析
+
 - 许可证分类（已授权/豁免/未授权/待处理）
 - 生成许可证分布饼图
 
 ### 4. Null value.py - 缺失值检查
+
 - 统计各字段的缺失值数量
 - 识别需要处理的缺失值字段
 
 ### 5. Top Hosts.py - 顶级房东分析
+
 - 统计每个房东的房源数量
 - 按房源数量排序，显示前10名房东
 
 ### 6. data clean.py - 数据清洗
+
 - 删除 `neighbourhood_group` 列
 - 填充缺失值（review 相关字段用 0，name 相关字段用 "blank_name"）
 
 ## 数据说明 / Data Description
 
 项目使用的数据包含以下字段：
+
 - `id`: 房源ID
 - `name`: 房源名称
 - `host_id`: 房东ID
@@ -164,26 +173,6 @@ All charts will be automatically saved to the `charts/` directory in PNG format 
 ## 注意事项 / Notes
 
 1. **数据文件**: 由于数据文件较大，已通过 `.gitignore` 排除，不会推送到 Git 仓库。请确保在 `data/` 目录下放置相应的数据文件。
-
 2. **图表输出**: 所有图表自动保存到 `charts/` 目录，如果目录不存在会自动创建。
-
 3. **相对路径**: 所有脚本使用相对路径读取数据，确保在正确的目录下运行脚本。
-
 4. **Python 版本**: 建议使用 Python 3.8 或更高版本。
-
-## 贡献指南 / Contributing
-
-欢迎提交 Issue 和 Pull Request 来改进项目。
-
-## 许可证 / License
-
-本项目仅供学习和研究使用。
-
-## 更新日志 / Changelog
-
-### 2024 - 初始版本
-- 完成数据清洗模块
-- 完成探索性数据分析脚本
-- 实现图表自动保存功能
-- 创建项目文档
-
