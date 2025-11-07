@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 # 读取房源数据 / Read listings data
 # 使用相对路径读取数据文件 / Use relative path to read data file
@@ -35,7 +36,13 @@ pie_label = np.select(
 listing["License_label"] = pie_label
 
 # ---许可证分布饼图 / License distribution pie chart ---
+# 确保输出目录存在 / Ensure output directory exists
+os.makedirs("../../charts", exist_ok=True)
+
 plt.figure(figsize=(8, 8))
 listing["License_label"].value_counts().plot(kind="pie", autopct="%1.1f%%")
 plt.title("Licenses")
-plt.show()
+plt.tight_layout()
+plt.savefig("../../charts/license_distribution.png", dpi=300, bbox_inches='tight')
+plt.close()
+print("图表已保存至: charts/license_distribution.png")
