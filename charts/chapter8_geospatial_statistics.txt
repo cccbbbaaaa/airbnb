@@ -1,0 +1,60 @@
+================================================================================
+Chapter 8: Geospatial Analysis
+第8章：地理空间分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:35:04
+
+## 房源地理分布 / Geographic Distribution
+
+### Top 10 Neighbourhoods by Listing Count
+   1. De Baarsjes - Oud-West: 2,701 (16.8%)
+   2. De Pijp - Rivierenbuurt: 1,986 (12.3%)
+   3. Centrum-West: 1,746 (10.8%)
+   4. Centrum-Oost: 1,372 (8.5%)
+   5. Westerpark: 1,205 (7.5%)
+   6. Zuid: 1,196 (7.4%)
+   7. Oud-Oost: 1,032 (6.4%)
+   8. Bos en Lommer: 931 (5.8%)
+   9. Oostelijk Havengebied - Indische Buurt: 733 (4.5%)
+  10. Oud-Noord: 518 (3.2%)
+
+## 地理位置与价格关系 / Location-Price Relationship
+
+### Top 10 Neighbourhoods by Average Price
+   1. Centrum-Oost: €196.55 (房源数: 1368)
+   2. Centrum-West: €186.45 (房源数: 1742)
+   3. IJburg - Zeeburgereiland: €175.16 (房源数: 396)
+   4. Zuid: €169.90 (房源数: 1194)
+   5. De Pijp - Rivierenbuurt: €163.18 (房源数: 1985)
+   6. Oud-Noord: €161.24 (房源数: 517)
+   7. Watergraafsmeer: €153.78 (房源数: 476)
+   8. Oud-Oost: €151.80 (房源数: 1032)
+   9. Westerpark: €149.76 (房源数: 1205)
+  10. De Baarsjes - Oud-West: €149.04 (房源数: 2700)
+
+## 地理位置与受欢迎度关系 / Location-Popularity Relationship
+
+### Top 10 Neighbourhoods by Average Reviews
+   1. Centrum-West: 42.3 (总评论数: 73891)
+   2. Centrum-Oost: 36.3 (总评论数: 49760)
+   3. De Aker - Nieuw Sloten: 33.2 (总评论数: 3854)
+   4. Bijlmer-Centrum: 30.4 (总评论数: 2764)
+   5. Osdorp: 28.6 (总评论数: 3262)
+   6. Oud-Noord: 25.8 (总评论数: 13378)
+   7. Gaasperdam - Driemond: 25.0 (总评论数: 2677)
+   8. Noord-Oost: 24.6 (总评论数: 5592)
+   9. Noord-West: 24.1 (总评论数: 7798)
+  10. Slotervaart: 23.2 (总评论数: 8096)
+
+## 房价热力图 / Price Heatmap
+
+### 热力图统计 / Heatmap Statistics
+  - 地图中心坐标 / Map Center: (52.3655, 4.8894)
+  - 热力图数据点 / Heatmap Data Points: 15,296
+  - 价格范围 / Price Range: €4.00 - €319.00
+  - 平均价格 / Average Price: €137.05
+
+### 生成的文件 / Generated Files
+  - chapter8_price_heatmap.html (交互式地图 / Interactive Map)
+  - chapter8_price_heatmap_static.png (静态热力图 / Static Heatmap)

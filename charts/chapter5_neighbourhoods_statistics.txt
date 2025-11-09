@@ -1,0 +1,36 @@
+================================================================================
+Chapter 5.4: Neighbourhoods Dataset Analysis
+第5.4章：neighbourhoods 数据集详细分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:34:57
+
+## 数据集概览 / Dataset Overview
+  - records: 22
+  - columns: 2
+  - unique_neighbourhoods: 22
+  - missing_values: 22
+
+## 所有街区列表 / All Neighbourhoods List
+   1. Bijlmer-Centrum
+   2. Bijlmer-Oost
+   3. Bos en Lommer
+   4. Buitenveldert - Zuidas
+   5. Centrum-Oost
+   6. Centrum-West
+   7. De Aker - Nieuw Sloten
+   8. De Baarsjes - Oud-West
+   9. De Pijp - Rivierenbuurt
+  10. Gaasperdam - Driemond
+  11. Geuzenveld - Slotermeer
+  12. IJburg - Zeeburgereiland
+  13. Noord-Oost
+  14. Noord-West
+  15. Oostelijk Havengebied - Indische Buurt
+  16. Osdorp
+  17. Oud-Noord
+  18. Oud-Oost
+  19. Slotervaart
+  20. Watergraafsmeer
+  21. Westerpark
+  22. Zuid

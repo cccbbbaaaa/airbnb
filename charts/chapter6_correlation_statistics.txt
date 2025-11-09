@@ -1,0 +1,29 @@
+================================================================================
+Chapter 6: Variable Correlation Analysis
+第6章：变量相关性分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:35:02
+
+## 数值型变量相关性矩阵 / Numerical Variable Correlation Matrix
+
+                                price  minimum_nights  number_of_reviews  reviews_per_month  calculated_host_listings_count  availability_365  number_of_reviews_ltm
+price                           1.000           0.022             -0.065             -0.045                           0.005             0.111                 -0.031
+minimum_nights                  0.022           1.000             -0.011             -0.022                          -0.017             0.070                 -0.028
+number_of_reviews              -0.065          -0.011              1.000              0.533                           0.017             0.262                  0.415
+reviews_per_month              -0.045          -0.022              0.533              1.000                           0.110             0.239                  0.672
+calculated_host_listings_count  0.005          -0.017              0.017              0.110                           1.000             0.211                  0.104
+availability_365                0.111           0.070              0.262              0.239                           0.211             1.000                  0.216
+number_of_reviews_ltm          -0.031          -0.028              0.415              0.672                           0.104             0.216                  1.000
+
+## 高度相关的变量对（|r| > 0.5）/ Highly Correlated Variable Pairs
+  - number_of_reviews ↔ reviews_per_month: 0.533
+  - reviews_per_month ↔ number_of_reviews_ltm: 0.672
+
+## 价格与其他变量的相关性 / Price Correlation with Other Variables
+  - availability_365: 0.111
+  - minimum_nights: 0.022
+  - calculated_host_listings_count: 0.005
+  - number_of_reviews_ltm: -0.031
+  - reviews_per_month: -0.045
+  - number_of_reviews: -0.065

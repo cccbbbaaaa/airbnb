@@ -1,0 +1,68 @@
+================================================================================
+数据质量与规模统计报告 / Data Quality & Scale Statistics Report
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:34:55
+
+================================================================================
+
+## 1. 数据集规模统计 / Dataset Scale Statistics
+
+总数据集数 / Total Datasets: 4
+总记录数 / Total Records: 434,533
+总数据大小 / Total Size: 9.97 MB
+
+
+## 2. 各数据集详细信息 / Detailed Dataset Information
+
+### LISTINGS
+  - 记录数 / Records: 16,116
+  - 字段数 / Columns: 18
+  - 大小 / Size: 2.33 MB
+
+### REVIEWS
+  - 记录数 / Records: 397,185
+  - 字段数 / Columns: 2
+  - 大小 / Size: 7.35 MB
+
+### CALENDAR
+  - 记录数 / Records: 21,210
+  - 字段数 / Columns: 3
+  - 大小 / Size: 0.29 MB
+
+### NEIGHBOURHOODS
+  - 记录数 / Records: 22
+  - 字段数 / Columns: 2
+  - 大小 / Size: 0.00 MB
+
+
+## 3. 数据完整度分析 / Data Completeness Analysis
+
+### LISTINGS
+  - 总字段数 / Total Fields: 18
+  - 完整字段数 / Complete Fields: 12
+  - 有缺失字段数 / Fields with Missing: 6
+  - 平均缺失率 / Avg Missing Rate: 10.99%
+  - 高缺失率字段 (>50%) / High Missing Fields:
+    - neighbourhood_group: 100.00%
+    - license: 71.74%
+
+### REVIEWS
+  - 总字段数 / Total Fields: 2
+  - 完整字段数 / Complete Fields: 2
+  - 有缺失字段数 / Fields with Missing: 0
+  - 平均缺失率 / Avg Missing Rate: 0.00%
+
+### CALENDAR
+  - 总字段数 / Total Fields: 3
+  - 完整字段数 / Complete Fields: 3
+  - 有缺失字段数 / Fields with Missing: 0
+  - 平均缺失率 / Avg Missing Rate: 0.00%
+
+### NEIGHBOURHOODS
+  - 总字段数 / Total Fields: 2
+  - 完整字段数 / Complete Fields: 1
+  - 有缺失字段数 / Fields with Missing: 1
+  - 平均缺失率 / Avg Missing Rate: 50.00%
+  - 高缺失率字段 (>50%) / High Missing Fields:
+    - neighbourhood_group: 100.00%

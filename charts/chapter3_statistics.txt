@@ -1,0 +1,27 @@
+================================================================================
+Chapter 3: Dataset Relationships & Structure Analysis
+第3章：数据集关系与结构分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:34:55
+
+## 数据集关系验证结果 / Dataset Relationship Validation Results
+
+### reviews.csv → listings.csv
+  - Reviews 中的唯一 listing_id 数: 14,029
+  - Listings 中的唯一 id 数: 16,116
+  - number_of_reviews 匹配率: 100.00%
+
+### calendar_summary.csv → listings.csv
+  - Calendar 中的唯一 listing_id 数: 16,113
+  - availability_365 匹配率: 99.75%
+
+### neighbourhoods.csv → listings.csv
+  - Neighbourhoods 中的唯一 neighbourhood 数: 22
+  - Listings 中的唯一 neighbourhood 数: 22
+
+## 数据整合价值 / Data Integration Value
+  - 可以整合的房源数: 16,116
+  - 可以整合的评论数: 397,185
+  - 平均每个房源的评论数: 24.6
+  - 有评论的房源占比: 87.1%

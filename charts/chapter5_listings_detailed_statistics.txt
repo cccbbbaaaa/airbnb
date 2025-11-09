@@ -1,0 +1,25 @@
+================================================================================
+Chapter 5.5: Listings Detailed Dataset Analysis
+第5.5章：listings_detailed 数据集详细分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:35:01
+
+## 数据集概览 / Dataset Overview
+  - detailed_records: 16,116
+  - detailed_columns: 74
+  - csv_records: 16,116
+  - csv_columns: 18
+  - extra_columns: 56
+
+## 字段对比 / Field Comparison
+  - 共同字段数: 17
+  - CSV 独有字段数: 1
+  - Detailed 独有字段数: 57
+
+## 额外字段类别 / Extra Field Categories
+  - Host 相关: 19
+  - Review 相关: 9
+  - Amenity 相关: 1
+  - Description 相关: 1
+  - 其他: 27

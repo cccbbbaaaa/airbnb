@@ -1,0 +1,67 @@
+================================================================================
+Chapter 5: Detailed Listings Dataset Analysis
+第5章：listings 数据集详细分析
+================================================================================
+
+生成时间 / Generated: 2025-11-09 21:34:56
+
+## 数据集概览 / Dataset Overview
+  - records: 16,116
+  - columns: 17
+  - memory_usage_mb: 7.70
+  - duplicate_rows: 0
+  - unique_hosts: 14,197
+  - unique_neighbourhoods: 22
+  - unique_room_types: 4
+
+## 字段详细分析 / Field Analysis
+
+### id
+  - Data Type / 数据类型: int64
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 16,116
+  - Mean / 均值: 21181837.52
+  - Median / 中位数: 19265932.00
+
+### name
+  - Data Type / 数据类型: object
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 15,767
+
+### host_id
+  - Data Type / 数据类型: int64
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 14,197
+  - Mean / 均值: 69760517.00
+  - Median / 中位数: 29741337.00
+
+### host_name
+  - Data Type / 数据类型: object
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 5,167
+
+### calculated_host_listings_count
+  - Data Type / 数据类型: int64
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 21
+  - Mean / 均值: 1.64
+  - Median / 中位数: 1.00
+
+### neighbourhood
+  - Data Type / 数据类型: object
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 22
+
+### latitude
+  - Data Type / 数据类型: float64
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 5,854
+  - Mean / 均值: 52.37
+  - Median / 中位数: 52.36
+
+### longitude
+  - Data Type / 数据类型: float64
+  - Missing Rate / 缺失率: 0.00%
+  - Unique Values / 唯一值数: 9,032
+  - Mean / 均值: 4.89
+  - Median / 中位数: 4.89
