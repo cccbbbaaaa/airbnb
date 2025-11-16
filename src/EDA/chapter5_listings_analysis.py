@@ -165,6 +165,7 @@ if 'room_type' in listings.columns:
 # price 分析
 if 'price' in listings.columns:
     price_stats = listings['price'].describe()
+    print(price_stats)
     print(f"\n  price 统计 / Statistics:")
     print(f"    - 均值 / Mean: €{price_stats['mean']:.2f}")
     print(f"    - 中位数 / Median: €{price_stats['50%']:.2f}")

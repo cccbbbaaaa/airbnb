@@ -91,6 +91,7 @@ print(f"  - 标准差 / Std: {count_stats['std']:.1f} 天")
 print("\n4. 入住率分析 / Occupancy Rate Analysis...")
 
 # 计算每个房源的入住率
+print(calendar['available'])
 calendar_unavailable = calendar[calendar['available'] == 'f'].groupby('listing_id')['count'].sum()
 calendar_available = calendar[calendar['available'] == 't'].groupby('listing_id')['count'].sum()
 

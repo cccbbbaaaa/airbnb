@@ -193,34 +193,86 @@ def analyze_dataset_relationships(data_dir=None, charts_dir=None, verbose=True):
         colors_reviews.append('#4CAF50')
     if False in reviews_match_data.index:
         labels_reviews.append('Mismatch')
-        colors_reviews.append('#F44336')
-    axes[0, 0].pie(reviews_match_data.values, labels=labels_reviews, 
-                   autopct='%1.1f%%', colors=colors_reviews)
+        colors_reviews.append('#005691')
+    axes[0, 0].pie(reviews_match_data.values, wedgeprops=dict(width=0.3, edgecolor='w'),labels=labels_reviews, 
+                    colors=colors_reviews, textprops={'fontsize': 15})
+    axes[0, 0].text(0, 0 , f"{match_rate}%", ha = 'center', va = 'center', fontsize = 28, fontweight = 'bold', color='#005691' )
     axes[0, 0].set_title('Reviews Count Match Rate', fontsize=12, fontweight='bold')
 
-    # 4.1.2 Calendar 匹配情况
+    # 4.1.2 Calendar 匹配情况 - 分离式圆环图
     calendar_match_data = merged_calendar['availability_match'].value_counts()
     labels_cal = []
     colors_cal = []
+    explode_cal = []
+    values_cal = []
+    
+    # 确保顺序：True (Match) 在前，False (Mismatch) 在后
     if True in calendar_match_data.index:
-        labels_cal.append('Match')
-        colors_cal.append('#4CAF50')
+        match_count = calendar_match_data[True]
+        match_pct = (match_count / len(merged_calendar)) * 100
+        labels_cal.append(f'Match {match_pct:.1f}%')  # 标签和百分比同一行
+        colors_cal.append('#005691')  # 深蓝色
+        values_cal.append(match_count)
+        explode_cal.append(0.05)  # 稍微拉出
     if False in calendar_match_data.index:
-        labels_cal.append('Mismatch')
-        colors_cal.append('#F44336')
-    axes[0, 1].pie(calendar_match_data.values, labels=labels_cal, 
-                   autopct='%1.1f%%', colors=colors_cal)
-    axes[0, 1].set_title('Availability Match Rate', fontsize=12, fontweight='bold')
+        mismatch_count = calendar_match_data[False]
+        mismatch_pct = (mismatch_count / len(merged_calendar)) * 100
+        labels_cal.append(f'Mismatch {mismatch_pct:.1f}%')  # 标签和百分比同一行
+        colors_cal.append('#F44336')  # 红色
+        values_cal.append(mismatch_count)
+        explode_cal.append(0.05)  # 稍微拉出
+    
+    # 创建分离式圆环图
+    wedges, texts, autotexts = axes[0, 1].pie(
+        values_cal, 
+        labels=labels_cal,
+        colors=colors_cal,
+        explode=explode_cal,
+        wedgeprops=dict(width=0.3, edgecolor='w', linewidth=2),
+        autopct='',  # 不显示额外的百分比，因为已经在标签中
+        labeldistance=1.1,
+        textprops={'fontsize': 12, 'fontweight': 'bold'},
+        startangle=90
+    )
+    
+    # 在中心添加匹配率文本
+    axes[0, 1].text(0, 0, f"{match_rate_cal:.1f}%", 
+                    ha='center', va='center', 
+                    fontsize=24, fontweight='bold', color='#005691')
+    
+    axes[0, 1].set_title('Availability Match rate', fontsize=12, fontweight='bold')
+    
+    # 在图表下方添加总结文本
+    summary_text = f"Over{match_rate_cal:.1f}%of property availability statuses align with actual data."
+    axes[0, 1].text(0.5, -0.15, summary_text, 
+                    ha='center', va='top', 
+                    transform=axes[0, 1].transAxes,
+                    fontsize=10, style='italic', color='#666666')
 
     # 4.1.3 有评论房源分布
     has_reviews = listings['number_of_reviews'] > 0
+    has_reviews_count = has_reviews.sum()
+    no_reviews_count = (~has_reviews).sum()
+    total_count = has_reviews_count + no_reviews_count
+    has_reviews_pct = (has_reviews_count / total_count) * 100
+    no_reviews_pct = (no_reviews_count / total_count) * 100
+    
     axes[1, 0].bar(['Has Reviews', 'No Reviews'], 
-                   [has_reviews.sum(), (~has_reviews).sum()],
-                   color=['#2196F3', '#FF9800'])
+                   [has_reviews_count, no_reviews_count],
+                   color=['#0066CC', '#CCCCCC'])
     axes[1, 0].set_ylabel('Number of Listings', fontsize=11)
-    axes[1, 0].set_title('Listings with Reviews', fontsize=12, fontweight='bold')
-    for i, v in enumerate([has_reviews.sum(), (~has_reviews).sum()]):
-        axes[1, 0].text(i, v, f'{v:,}', ha='center', va='bottom', fontsize=10)
+    axes[1, 0].set_title('Listing Review Coverage Rate', fontsize=12, fontweight='bold')
+    # 移除边框和网格线
+    axes[1, 0].spines['top'].set_visible(False)
+    axes[1, 0].spines['right'].set_visible(False)
+    axes[1, 0].spines['bottom'].set_visible(False)
+    axes[1, 0].spines['left'].set_visible(False)
+    axes[1, 0].grid(False)
+    # 添加百分比标签
+    axes[1, 0].text(0, has_reviews_count, f'{has_reviews_count:,} ({has_reviews_pct:.2f}%)', 
+                    ha='center', va='bottom', fontsize=10)
+    axes[1, 0].text(1, no_reviews_count, f'{no_reviews_count:,} ({no_reviews_pct:.2f}%)', 
+                    ha='center', va='bottom', fontsize=10)
 
     # 4.1.4 评论数分布（对数尺度）
     reviews_dist = listings[listings['number_of_reviews'] > 0]['number_of_reviews']
@@ -228,6 +280,7 @@ def analyze_dataset_relationships(data_dir=None, charts_dir=None, verbose=True):
     axes[1, 1].set_xlabel('Log(Number of Reviews + 1)', fontsize=11)
     axes[1, 1].set_ylabel('Frequency', fontsize=11)
     axes[1, 1].set_title('Distribution of Reviews (Log Scale)', fontsize=12, fontweight='bold')
+    axes[1 ,1].grid(False)
 
     plt.tight_layout()
     plt.savefig(charts_dir / 'chapter3_dataset_relationships.png', dpi=300, bbox_inches='tight')

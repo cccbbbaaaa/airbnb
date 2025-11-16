@@ -3,12 +3,12 @@ Chapter 5: Detailed Listings Dataset Analysis
 第5章：listings 数据集详细分析
 ================================================================================
 
-生成时间 / Generated: 2025-11-09 21:34:56
+生成时间 / Generated: 2025-11-11 16:25:28
 
 ## 数据集概览 / Dataset Overview
   - records: 16,116
   - columns: 17
-  - memory_usage_mb: 7.70
+  - memory_usage_mb: 7.06
   - duplicate_rows: 0
   - unique_hosts: 14,197
   - unique_neighbourhoods: 22
