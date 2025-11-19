@@ -23,7 +23,6 @@ data/*.parquet
 # IDE 配置文件 / IDE Configuration Files
 .vscode/
 .idea/
-.cursor/
 *.swp
 *.swo
 *~

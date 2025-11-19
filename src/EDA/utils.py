@@ -25,7 +25,9 @@ def get_project_paths():
     获取项目路径 / Get project paths
     
     Returns:
-        tuple: (project_root, data_dir, charts_dir)
+        tuple: (project_root, data_dir, charts_eda_dir, charts_model_dir)
+        为了向后兼容，也支持旧的三元组格式 (project_root, data_dir, charts_dir)
+        For backward compatibility, also supports old triple format (project_root, data_dir, charts_dir)
     """
     # 获取项目根目录路径 / Get project root directory path
     # 处理 __file__ 不存在的情况（如在 Notebook 中使用 exec）
@@ -62,9 +64,17 @@ def get_project_paths():
             project_root = cwd
     
     data_dir = project_root / 'data'
+    charts_eda_dir = project_root / 'charts' / 'EDA'
+    charts_model_dir = project_root / 'charts' / 'model'
+    os.makedirs(charts_eda_dir, exist_ok=True)
+    os.makedirs(charts_model_dir, exist_ok=True)
+    
+    # 为了向后兼容，也创建旧的 charts_dir 目录
+    # For backward compatibility, also create old charts_dir
     charts_dir = project_root / 'charts'
     os.makedirs(charts_dir, exist_ok=True)
-    return project_root, data_dir, charts_dir
+    
+    return project_root, data_dir, charts_eda_dir, charts_model_dir
 
 def load_listings_data(data_dir, clean=True):
     """

@@ -36,7 +36,16 @@ project/
 │   │   ├── eda_main.py                # EDA main function wrapper
 │   │   └── README.md                  # EDA module usage guide
 │   │
-│   ├── modeling/                     # Modeling module (to be developed)
+│   ├── modeling/                     # Modeling module
+│   │   ├── feature_engineering/      # Feature engineering scripts
+│   │   │   ├── general_feature_engine.py     # Legacy general feature engineering
+│   │   │   └── rating_feature_engineering.py # Rating-specific feature engineering
+│   │   ├── linear_svm_income_prediction.py  # Linear Regression & SVM income prediction
+│   │   ├── xgboost_income_prediction.py     # XGBoost income prediction
+│   │   ├── xgboost_rating_prediction.py     # Baseline XGBoost rating prediction
+│   │   ├── xgboost_rating_prediction_v2.py  # Enhanced XGBoost rating prediction
+│   │   ├── compare_model_feature_importance.py  # Model feature importance comparison
+│   │   └── test_modeling_scripts.py  # Test script for modeling functions
 │   │
 │   └── old_EDA/                       # Old EDA files (archived)
 │       ├── Airbnb_EDA.ipynb          # Original EDA Notebook
@@ -222,6 +231,110 @@ The main Notebook includes the following analysis chapters, executed in order:
 - **9.1 帕累托分析** / Pareto Analysis: 评论和收入分布分析 / Review and revenue distribution analysis
 - **9.2 价格策略分析** / Pricing Strategy Analysis: 价格影响因素和最优定价区间 / Price influencing factors and optimal pricing ranges
 
+## 建模模块 / Modeling Module
+
+### 模型概述 / Model Overview
+
+建模模块包含以下预测模型：
+The modeling module includes the following prediction models:
+
+1. **收入预测模型** / Income Prediction Models
+   - **目标变量** / Target Variable: `income = price × (365 - availability_365)`
+   - **模型** / Models:
+     - 线性回归 / Linear Regression
+     - 支持向量机（SVM）/ Support Vector Machine (SVM)
+     - XGBoost（梯度提升树）/ XGBoost (Gradient Boosting)
+   - **用途** / Purpose: 预测房源年收入，帮助房东优化定价策略
+
+2. **评分预测模型** / Rating Prediction Model
+   - **目标变量** / Target Variable: `review_scores_rating` (0-100)
+   - **模型** / Models:
+     - `xgboost_rating_prediction.py`: 基础特征版本 / Baseline feature set
+     - `xgboost_rating_prediction_v2.py`: 强化特征版本，使用 `feature_engineering/rating_feature_engineering.py`
+   - **用途** / Purpose: 预测房源评分，识别影响评分的关键因素
+
+### 使用方法 / Usage
+
+#### 1. 特征工程 / Feature Engineering
+
+首先运行特征工程脚本进行数据预处理：
+First run the feature engineering script for data preprocessing:
+
+```bash
+# 通用特征工程（可选）/ General feature engineering (optional legacy script)
+python src/feature_engineering/general_feature_engine.py
+
+# 评分预测专用特征工程 / Rating-specific feature engineering
+python src/feature_engineering/rating_feature_engineering.py
+```
+
+#### 2. 训练模型 / Train Models
+
+运行各个建模脚本：
+Run each modeling script:
+
+```bash
+# 线性回归和SVM收入预测 / Linear Regression & SVM Income Prediction
+python src/modeling/linear_svm_income_prediction.py
+
+# XGBoost收入预测 / XGBoost Income Prediction
+python src/modeling/xgboost_income_prediction.py
+
+# XGBoost评分预测 / XGBoost Rating Prediction
+python src/modeling/xgboost_rating_prediction.py
+
+# XGBoost评分预测（强化版）/ Enhanced XGBoost Rating Prediction
+python src/modeling/xgboost_rating_prediction_v2.py
+```
+
+#### 3. 对比模型特征重要性 / Compare Model Feature Importance
+
+运行对比脚本：
+Run the comparison script:
+
+```bash
+python src/modeling/compare_model_feature_importance.py
+```
+
+#### 4. 测试代码 / Test Code
+
+运行测试脚本验证关键功能：
+Run the test script to verify key functions:
+
+```bash
+python src/modeling/test_modeling_scripts.py
+```
+
+### 模型输出 / Model Outputs
+
+所有模型输出保存在 `charts/` 目录：
+All model outputs are saved in the `charts/` directory:
+
+- **模型文件** / Model Files:
+  - `linear_regression_income_model.pkl` - 线性回归模型
+  - `svm_income_model.pkl` - SVM模型
+  - `xgboost_income_model.pkl` - XGBoost收入预测模型
+  - `xgboost_rating_model.pkl` - XGBoost评分预测模型（基础版）
+  - `xgboost_rating_model_v2.pkl` - XGBoost评分预测模型（强化版）
+
+- **特征重要性** / Feature Importance:
+  - `linear_regression_feature_importance.csv`
+  - `svm_feature_importance.csv`
+  - `xgboost_feature_importance.csv`
+  - `xgboost_rating_feature_importance.csv`
+  - `xgboost_rating_feature_importance_v2.csv`
+  - `all_models_feature_importance_comparison.csv`
+
+- **可视化图表** / Visualizations:
+  - `linear_svm_model_results.png` - 线性回归和SVM模型结果
+  - `linear_svm_model_comparison.png` - 模型性能对比
+  - `xgboost_model_results.png` - XGBoost模型结果
+  - `all_models_top20_feature_importance.png` - 特征重要性对比
+  - `linear_regression_comparison.png` - 线性回归基线对比
+
+- **特征工程输出** / Feature Engineering Outputs:
+  - `data/processed/rating_features.csv` - 评分预测特征数据集（由 `rating_feature_engineering.py` 生成）
+
 ## 输出说明 / Output Description
 
 ### 图表文件 / Chart Files
@@ -350,6 +463,13 @@ The project uses the following datasets:
 - [X] 工具函数模块（`utils.py`）/ Utility functions module (`utils.py`)
 - [X] 50+ 个可视化图表生成 / 50+ visualization charts generated
 - [X] 完整的 EDA 报告大纲（`docs/EDA_Report_Outline.md`）/ Complete EDA report outline (`docs/EDA_Report_Outline.md`)
+- [X] 建模模块开发 / Modeling module development
+  - [X] 特征工程脚本（`Feature_engine.py`）/ Feature engineering script
+  - [X] 收入预测模型（线性回归、SVM、XGBoost）/ Income prediction models (Linear Regression, SVM, XGBoost)
+  - [X] 评分预测模型（XGBoost）/ Rating prediction model (XGBoost)
+  - [X] 评分预测强化特征工程 + 模型（`rating_feature_engineering.py`, `xgboost_rating_prediction_v2.py`）/ Enhanced rating feature engineering + model
+  - [X] 模型特征重要性对比工具 / Model feature importance comparison tool
+  - [X] 代码测试和逻辑验证 / Code testing and logic verification
 
 ### ⚠️ 进行中 / In Progress
 
@@ -358,12 +478,13 @@ The project uses the following datasets:
   - [ ] 数据质量挑战与处理（第10章）/ Data quality challenges and handling (Chapter 10)
   - [ ] 特征工程建议（第11章）/ Feature engineering suggestions (Chapter 11)
   - [ ] 总结与下一步行动（第12章）/ Summary and next steps (Chapter 12)
+- [ ] 模型优化和调参 / Model optimization and hyperparameter tuning
+- [ ] 模型评估报告 / Model evaluation report
 
 ### 📋 待开始 / To Do
 
 - [ ] 准备与老师的会面材料 / Prepare materials for meeting with instructor
-- [ ] 数据准备阶段（特征工程、数据清洗）/ Data preparation phase (feature engineering, data cleaning)
-- [ ] 建模阶段 / Modeling phase
+- [ ] 模型部署和预测服务 / Model deployment and prediction service
 
 ## 相关文档 / Related Documentation
 

@@ -29,7 +29,8 @@ def analyze_dataset_relationships(data_dir=None, charts_dir=None, verbose=True):
     # 设置 / Setup
     setup_plotting()
     if data_dir is None or charts_dir is None:
-        _, data_dir, charts_dir = get_project_paths()
+        _, data_dir, charts_eda_dir, charts_model_dir = get_project_paths()
+        charts_dir = charts_eda_dir  # 使用 EDA 目录 / Use EDA directory
     
     if verbose:
         print_section_header(

@@ -31,7 +31,8 @@ except ImportError:
 setup_plotting()
 
 # 获取项目根目录路径 / Get project root directory path
-project_root, data_dir, charts_dir = get_project_paths()
+project_root, data_dir, charts_eda_dir, charts_model_dir = get_project_paths()
+charts_dir = charts_eda_dir  # 使用 EDA 目录 / Use EDA directory
 
 print("=" * 80)
 print("Chapter 8: Geospatial Analysis")
