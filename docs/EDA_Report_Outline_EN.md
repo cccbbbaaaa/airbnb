@@ -1,27 +1,27 @@
 # 📊 Airbnb Amsterdam Exploratory Data Analysis Report
 
-**Project Name**: Airbnb Amsterdam Data Mining Project  
-**Dataset**: Amsterdam Airbnb Listings Data  
-**Analysis Date**: 2025-01-27  
-**Methodology**: CRISP-DM (Cross-Industry Standard Process for Data Mining)  
+**Project Name**: Airbnb Amsterdam Data Mining Project
+**Dataset**: Amsterdam Airbnb Listings Data
+**Analysis Date**: 2025-01-27
+**Methodology**: CRISP-DM (Cross-Industry Standard Process for Data Mining)
 **Document Version**: v1.0
 
 ---
 
 ## 📑 Table of Contents
 
-1. [Project Overview & Business Understanding](#1-project-overview--business-understanding)
-2. [Data Quality & Scale Overview](#2-data-quality--scale-overview)
-3. [Dataset Relationships & Structure](#3-dataset-relationships--structure)
-4. [Core Findings & Key Insights](#4-core-findings--key-insights)
+1. [Project Overview &amp; Business Understanding](#1-project-overview--business-understanding)
+2. [Data Quality &amp; Scale Overview](#2-data-quality--scale-overview)
+3. [Dataset Relationships &amp; Structure](#3-dataset-relationships--structure)
+4. [Core Findings &amp; Key Insights](#4-core-findings--key-insights)
 5. [Detailed Dataset Analysis](#5-detailed-dataset-analysis)
 6. [Variable Correlation Analysis](#6-variable-correlation-analysis)
 7. [Time Series Analysis](#7-time-series-analysis)
 8. [Geospatial Analysis](#8-geospatial-analysis)
 9. [Deep Business Insights](#9-deep-business-insights)
-10. [Data Quality Challenges & Handling](#10-data-quality-challenges--handling)
+10. [Data Quality Challenges &amp; Handling](#10-data-quality-challenges--handling)
 11. [Feature Engineering Suggestions](#11-feature-engineering-suggestions)
-12. [Summary & Next Steps](#12-summary--next-steps)
+12. [Summary &amp; Next Steps](#12-summary--next-steps)
 
 ---
 
@@ -34,17 +34,14 @@
   - Amsterdam is an important European tourist city with an active Airbnb market
   - The dataset covers 16,116 listings and 397,185 review records
   - Time span: 2009-2021 (12.4 years)
-
 - **Business Objectives**:
 
   - Identify key factors affecting listing performance (price, popularity, availability)
   - Provide data-driven pricing and operational strategy recommendations for hosts
   - Provide insights for platform optimization of listing recommendations and matching algorithms
-
 - **Data Source**: Inside Airbnb Amsterdam Dataset
 
   - Public dataset containing listing information, reviews, calendar availability, etc.
-
 - **Analysis Purpose**:
   Through data mining techniques (CRISP-DM methodology), identify key factors affecting listing performance and provide business improvement recommendations for hosts and the platform.
 
@@ -59,26 +56,17 @@
    - Research Question: What factors affect listing prices? How to optimize pricing strategies?
    - Target Variable: `price` (listing price)
    - Business Value: Help hosts set optimal prices to increase revenue
-
 2. **Listing Popularity Prediction** ⭐⭐⭐⭐⭐
 
    - Research Question: What features make listings more popular? How to predict listing popularity?
    - Target Variable: `number_of_reviews` or `reviews_per_month`
    - Business Value: Identify popular listing features to guide listing optimization
-
 3. **Listing Activity Alert** ⭐⭐⭐⭐
 
    - Research Question: Which listings may become inactive? How to provide early warnings?
    - Target Variable: `availability_365` or occupancy rate
    - Business Value: Early warning to help hosts improve listing performance
-
-4. **Seasonal Demand Prediction** ⭐⭐⭐⭐⭐
-
-   - Research Question: What are the demand patterns for different seasons? How to optimize seasonal pricing?
-   - Target Variable: Seasonal indicators based on `reviews.csv` and `calendar_summary.csv`
-   - Business Value: Optimize pricing and marketing strategies to increase peak season revenue
-
-5. **Optimal Occupancy-Price Balance** ⭐⭐⭐⭐⭐
+4. **Optimal Occupancy-Price Balance** ⭐⭐⭐⭐⭐
 
    - Research Question: How to find the optimal balance between price and occupancy rate?
    - Target Variable: Revenue = `price × (365 - availability_365)`
@@ -92,6 +80,7 @@ Based on project requirements and data characteristics, we recommend choosing **
 Through in-depth EDA analysis, we found:
 
 1. **Pricing Strategy Optimization Direction** ⭐⭐⭐⭐⭐ (Highly Recommended)
+
    - ✅ **Sufficient Data**: Complete price data (16,116 records), clear influencing factors
    - ✅ **Clear Influencing Factors**: Key factors such as room type, location, popularity, occupancy rate have been identified
    - ✅ **High Business Value**: Can directly provide pricing recommendations to hosts to increase revenue
@@ -101,8 +90,8 @@ Through in-depth EDA analysis, we found:
      - Location significantly affects price (city center €196.55 vs other areas €149-€175)
      - Clear room type price differences (entire home €170.82 vs shared room €92.31)
      - Optimal pricing range: €150-€200 (most listings, moderate revenue)
-
 2. **Popularity Prediction Direction** ⭐⭐⭐⭐ (Recommended)
+
    - ✅ **Sufficient Data**: Rich review data (397,185 records, 12.4-year time span)
    - ✅ **Clear Influencing Factors**: Key factors such as location, room type, price have been identified
    - ⚠️ **Data Challenges**: Review distribution is extremely right-skewed (median 8, maximum 877)
@@ -117,27 +106,28 @@ Through in-depth EDA analysis, we found:
 
 **Potential Target Variables**:
 
-| Variable Name | Type | Business Meaning | Data Availability |
-|--------------|------|------------------|-------------------|
-| `price` | Continuous | Nightly price (EUR) | ✅ Complete (16,116 records) |
-| `number_of_reviews` | Discrete | Total number of reviews | ✅ Complete (16,116 records) |
-| `reviews_per_month` | Continuous | Average monthly reviews | ⚠️ Partially missing (2,087 missing, 12.9%) |
-| `availability_365` | Discrete | Available days per year | ✅ Complete (16,116 records) |
-| `occupancy_rate` | Continuous | Occupancy rate = (365 - availability_365) / 365 | ✅ Calculable (based on availability_365) |
+| Variable Name         | Type       | Business Meaning                                | Data Availability                             |
+| --------------------- | ---------- | ----------------------------------------------- | --------------------------------------------- |
+| `price`             | Continuous | Nightly price (EUR)                             | ✅ Complete (16,116 records)                  |
+| `number_of_reviews` | Discrete   | Total number of reviews                         | ✅ Complete (16,116 records)                  |
+| `reviews_per_month` | Continuous | Average monthly reviews                         | ⚠️ Partially missing (2,087 missing, 12.9%) |
+| `availability_365`  | Discrete   | Available days per year                         | ✅ Complete (16,116 records)                  |
+| `occupancy_rate`    | Continuous | Occupancy rate = (365 - availability_365) / 365 | ✅ Calculable (based on availability_365)     |
 
 **Target Variable Selection Recommendations**:
 
 - **If choosing Pricing Strategy Optimization**: Use `price` as target variable
+
   - ✅ **Recommended**: Complete data, clear influencing factors, high business value
   - ⚠️ **Note**: Price is extremely right-skewed, requires log transformation or outlier handling
   - 📊 **Key Features**: Room type, location, review count, occupancy rate, etc.
-
 - **If choosing Popularity Prediction**: Use `number_of_reviews` or `reviews_per_month` as target variable
+
   - ✅ **Recommended**: Rich data, complete time series information
   - ⚠️ **Note**: Review distribution is extremely right-skewed, requires handling of imbalance
   - 📊 **Key Features**: Location, room type, price, listing age, etc.
-
 - **If choosing Activity Alert**: Use `availability_365` or `occupancy_rate` as target variable
+
   - ⚠️ **Moderately Recommended**: Complete data, but relatively lower business value
   - 📊 **Key Features**: Price, review count, location, etc.
 
@@ -156,13 +146,13 @@ Through in-depth EDA analysis, we found:
 
 **Dataset Scale**:
 
-| Dataset | Records | Columns | Size | Status |
-|---------|---------|---------|------|--------|
-| **listings.csv** | 16,116 | 18 (original) / 17 (cleaned) | 2.33 MB | ✅ Analyzed |
-| **reviews.csv** | 397,185 | 2 | 7.35 MB | ✅ Loaded |
-| **calendar_summary.csv** | 21,210 | 3 | 0.29 MB | ✅ Loaded |
-| **neighbourhoods.csv** | 22 | 2 | <0.01 MB | ✅ Loaded |
-| **listings_detailed.xlsx** | ? | ? | ~15 MB | ⚠️ To be explored |
+| Dataset                          | Records | Columns                      | Size     | Status              |
+| -------------------------------- | ------- | ---------------------------- | -------- | ------------------- |
+| **listings.csv**           | 16,116  | 18 (original) / 17 (cleaned) | 2.33 MB  | ✅ Analyzed         |
+| **reviews.csv**            | 397,185 | 2                            | 7.35 MB  | ✅ Loaded           |
+| **calendar_summary.csv**   | 21,210  | 3                            | 0.29 MB  | ✅ Loaded           |
+| **neighbourhoods.csv**     | 22      | 2                            | <0.01 MB | ✅ Loaded           |
+| **listings_detailed.xlsx** | ?       | ?                            | ~15 MB   | ⚠️ To be explored |
 
 **Data Scale Visualization**:
 
@@ -179,12 +169,12 @@ Through in-depth EDA analysis, we found:
 
 **Overall Data Quality**:
 
-| Dataset | Total Fields | Complete Fields | Fields with Missing | Avg Missing Rate |
-|---------|--------------|----------------|---------------------|------------------|
-| **listings.csv** | 18 | 12 | 6 | 10.99% |
-| **reviews.csv** | 2 | 2 | 0 | **0.00%** ✅ |
-| **calendar_summary.csv** | 3 | 3 | 0 | **0.00%** ✅ |
-| **neighbourhoods.csv** | 2 | 1 | 1 | 50.00% |
+| Dataset                        | Total Fields | Complete Fields | Fields with Missing | Avg Missing Rate   |
+| ------------------------------ | ------------ | --------------- | ------------------- | ------------------ |
+| **listings.csv**         | 18           | 12              | 6                   | 10.99%             |
+| **reviews.csv**          | 2            | 2               | 0                   | **0.00%** ✅ |
+| **calendar_summary.csv** | 3            | 3               | 0                   | **0.00%** ✅ |
+| **neighbourhoods.csv**   | 2            | 1               | 1                   | 50.00%             |
 
 **Data Completeness Visualization**:
 
@@ -194,14 +184,14 @@ Through in-depth EDA analysis, we found:
 
 #### listings.csv Missing Values
 
-| Field | Missing Count | Missing Rate | Handling Status |
-|-------|---------------|--------------|-----------------|
-| `neighbourhood_group` | 16,116 | 100.00% | ✅ Deleted (all empty) |
-| `license` | 11,561 | 71.74% | ⚠️ High missing rate, needs attention |
-| `reviews_per_month` | 2,087 | 12.95% | ✅ Filled with 0 |
-| `last_review` | 2,087 | 12.95% | ✅ Filled with 0 |
-| `name` | 30 | 0.19% | ✅ Filled with placeholder |
-| `host_name` | 5 | 0.03% | ✅ Filled with placeholder |
+| Field                   | Missing Count | Missing Rate | Handling Status                         |
+| ----------------------- | ------------- | ------------ | --------------------------------------- |
+| `neighbourhood_group` | 16,116        | 100.00%      | ✅ Deleted (all empty)                  |
+| `license`             | 11,561        | 71.74%       | ⚠️ High missing rate, needs attention |
+| `reviews_per_month`   | 2,087         | 12.95%       | ✅ Filled with 0                        |
+| `last_review`         | 2,087         | 12.95%       | ✅ Filled with 0                        |
+| `name`                | 30            | 0.19%        | ✅ Filled with placeholder              |
+| `host_name`           | 5             | 0.03%        | ✅ Filled with placeholder              |
 
 **Key Insights**:
 
@@ -224,12 +214,10 @@ Through in-depth EDA analysis, we found:
 
    - `listings.csv` - Snapshot of listings at a point in time (September 2021)
    - `neighbourhoods.csv` - Neighborhood reference data
-
 2. **Time Series Data**:
 
    - `reviews.csv` - Review time series (2009-2021)
    - Contains `listing_id` and `date` fields, can be used for time trend analysis
-
 3. **Aggregated Data**:
 
    - `calendar_summary.csv` - Calendar availability summary
@@ -407,13 +395,13 @@ graph TB
 
 **Integrated Data Scale**:
 
-| Metric | Value | Description |
-|--------|-------|-------------|
-| Listings that can be integrated | 16,116 | Core dataset |
-| Reviews that can be integrated | 397,185 | Time series data |
-| Average reviews per listing | 24.6 | Review richness |
-| Listings with reviews | 14,029 | 87.1% of listings have reviews |
-| Listings with reviews percentage | 87.1% | Data coverage |
+| Metric                           | Value   | Description                    |
+| -------------------------------- | ------- | ------------------------------ |
+| Listings that can be integrated  | 16,116  | Core dataset                   |
+| Reviews that can be integrated   | 397,185 | Time series data               |
+| Average reviews per listing      | 24.6    | Review richness                |
+| Listings with reviews            | 14,029  | 87.1% of listings have reviews |
+| Listings with reviews percentage | 87.1%   | Data coverage                  |
 
 **Integration Analysis Potential**:
 
@@ -422,21 +410,18 @@ graph TB
    - Price + Reviews + Availability = Complete listing performance profile
    - Can identify high-value listings (high price, high reviews, high occupancy rate)
    - Can identify problematic listings (low price, low reviews, low occupancy rate)
-
 2. **Time Series Analysis** ✅
 
    - Review trend analysis (based on reviews.csv, 2009-2021)
    - Booking trend analysis (based on calendar_summary.csv)
    - Seasonal pattern identification (peak/off seasons)
    - COVID-19 impact analysis (2020-2021)
-
 3. **Geospatial Analysis** ✅
 
    - Neighborhood + Coordinates = Complete geographic information
    - Can analyze location impact on price
    - Can analyze location impact on popularity
    - Can create geographic distribution maps
-
 4. **Host Behavior Analysis** ✅
 
    - Multi-listing hosts vs single-listing hosts
@@ -461,20 +446,17 @@ Through validation analysis, relationships between all datasets are clear and da
    - 16,116 listing records complete
    - Core field completeness 100%
    - Can serve as central node for data integration
-
 2. **Time Series Data (reviews.csv) is Rich**
 
    - 397,185 review records
    - 12.4-year time span (2009-2021)
    - 87.1% of listings have review data
    - Can be used for long-term trend analysis and seasonal pattern identification
-
 3. **Availability Data (calendar_summary.csv) is Complete**
 
    - 99.8% of listings have availability data
    - 99.76% data consistency
    - Can be used for occupancy rate analysis and operational pattern identification
-
 4. **Geographic Data (neighbourhoods.csv) is Consistent**
 
    - 100% data match
@@ -566,13 +548,11 @@ Through validation analysis, relationships between all datasets are clear and da
    - **High Geographic Concentration**: Top 5 neighborhoods account for 55.9% of listings
    - **High Room Type Concentration**: Entire home/apt accounts for 77.8%, dominant in the market
    - **Low Host Concentration**: 78.7% of hosts have only 1 listing, market is dispersed
-
 2. **Price Distribution Characteristics**:
 
    - **Extremely Right-Skewed Distribution**: Most listings priced between €100-€200
    - **Long-Tail Distribution**: Extreme high-value listings exist (maximum €8,000)
    - **Clear Room Type Price Differences**: Entire home/apt prices are 85% higher than shared rooms
-
 3. **Market Activity**:
 
    - **High Occupancy Rate Dominates**: 77.6% of listings have occupancy rate >80%
@@ -586,7 +566,6 @@ Through validation analysis, relationships between all datasets are clear and da
    - **Rapid Growth Period**: Continuous rapid growth from 2009-2019
    - **2019 Peak**: 95,313 reviews (historical peak)
    - **COVID-19 Impact**: 66.8% decline in 2020, continued decline in 2021
-
 2. **Seasonal Pattern**:
 
    - **Summer Peak Season**: July-August average review count highest (48,155 reviews)
@@ -600,7 +579,6 @@ Through validation analysis, relationships between all datasets are clear and da
    - ✅ **Core Fields Complete**: Core fields such as id, price, room_type, neighbourhood have 100% completeness
    - ⚠️ **Some Fields Missing**: license missing rate 71.74%, reviews_per_month missing rate 12.95%
    - ✅ **Time Series Data Complete**: reviews.csv has no missing values
-
 2. **Data Consistency**:
 
    - ✅ **Dataset Relationships Consistent**: Reviews and calendar data match with listings at >99% rate
@@ -614,13 +592,11 @@ Through validation analysis, relationships between all datasets are clear and da
    - **Entire Home/Apt is Mainstream**: Accounts for 77.8%, highest price (€170.82)
    - **Many High Occupancy Listings**: 77.6% of listings have occupancy rate >80%
    - **Review Distribution Extremely Right-Skewed**: Few listings have many reviews, most listings have few reviews
-
 2. **Market Opportunity Identification**:
 
    - **Private Room Market**: 21.3% of listings, moderate price (€108.03), growth potential
    - **Seasonal Operation Opportunities**: 13.5% of listings are seasonal operations, can optimize pricing strategies
    - **Low Occupancy Listings**: 8.5% of listings have occupancy rate <20%, need strategy improvement
-
 3. **Risk Identification**:
 
    - **Low Review Activity**: 77.9% of listings have no reviews for over 1 year, may indicate many inactive listings
@@ -634,7 +610,6 @@ Through validation analysis, relationships between all datasets are clear and da
    - **City Center Prices Highest**: Centrum-Oost (€196.55) and Centrum-West (€186.45) prices significantly higher than other neighborhoods
    - **Clear Price Geographic Gradient**: City center → surrounding areas price decreases, consistent with urban real estate price distribution patterns
    - **Significant Price Differences**: Price difference between highest and lowest price neighborhoods can reach €47
-
 2. **Location-Popularity Impact**:
 
    - **City Center Highest Popularity**: Centrum-West (42.3 reviews) and Centrum-Oost (36.3 reviews) review counts significantly higher than other neighborhoods
@@ -648,7 +623,6 @@ Through validation analysis, relationships between all datasets are clear and da
    - **Relatively Concentrated**: 76.3% of reviews come from TOP 20% of listings
    - **Close to 80/20 Rule**: 80% of reviews come from top 23.6% of listings
    - **Healthy Market**: Review distribution relatively dispersed, most listings have some reviews
-
 2. **Revenue Distribution Characteristics**:
 
    - **Relatively Dispersed**: Only 41.0% of revenue comes from TOP 20% of listings
@@ -663,7 +637,6 @@ Through validation analysis, relationships between all datasets are clear and da
    - **Location**: City center highest price (€196.55), surrounding areas price decreases
    - **Popularity**: Medium review count (21-50 reviews) listings have highest price (€165.05)
    - **Occupancy Rate**: Medium-high occupancy rate (50-80%) listings have highest price (€188.19)
-
 2. **Optimal Pricing Strategy**:
 
    - **High-End Market**: €500+ price range has highest average revenue (€202,278), but few listings (188 listings)
@@ -687,27 +660,27 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Basic Dataset Information**:
 
-| Metric | Value |
-|--------|-------|
-| Total Records | 16,116 |
-| Total Columns | 17 (after cleaning) |
-| Unique Hosts | 14,197 |
-| Unique Neighbourhoods | 22 |
-| Unique Room Types | 4 |
-| Average Listings per Host | 1.14 |
-| Multi-listing Hosts | 3,018 (21.3%) |
+| Metric                    | Value               |
+| ------------------------- | ------------------- |
+| Total Records             | 16,116              |
+| Total Columns             | 17 (after cleaning) |
+| Unique Hosts              | 14,197              |
+| Unique Neighbourhoods     | 22                  |
+| Unique Room Types         | 4                   |
+| Average Listings per Host | 1.14                |
+| Multi-listing Hosts       | 3,018 (21.3%)       |
 
 #### 5.1.2 Field Analysis
 
 **Basic Information Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `id` | int64 | 0.00% | 16,116 | Mean: 21,181,838 | Unique listing identifier |
-| `name` | object | 0.00% | 15,767 | - | Listing name/title (349 duplicate names) |
-| `host_id` | int64 | 0.00% | 14,197 | Mean: 69,760,517 | Unique host identifier |
-| `host_name` | object | 0.00% | 5,167 | - | Host name (may have duplicate names) |
-| `calculated_host_listings_count` | int64 | 0.00% | 21 | Mean: 1.64, Median: 1.0, Max: 30 | Total listings for this host |
+| Field                              | Type   | Missing Rate | Unique Values | Key Statistics                   | Business Meaning                         |
+| ---------------------------------- | ------ | ------------ | ------------- | -------------------------------- | ---------------------------------------- |
+| `id`                             | int64  | 0.00%        | 16,116        | Mean: 21,181,838                 | Unique listing identifier                |
+| `name`                           | object | 0.00%        | 15,767        | -                                | Listing name/title (349 duplicate names) |
+| `host_id`                        | int64  | 0.00%        | 14,197        | Mean: 69,760,517                 | Unique host identifier                   |
+| `host_name`                      | object | 0.00%        | 5,167         | -                                | Host name (may have duplicate names)     |
+| `calculated_host_listings_count` | int64  | 0.00%        | 21            | Mean: 1.64, Median: 1.0, Max: 30 | Total listings for this host             |
 
 **Key Insights**:
 
@@ -717,11 +690,11 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Geographic Information Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `neighbourhood` | object | 0.00% | 22 | - | Neighborhood (22 neighborhoods) |
-| `latitude` | float64 | 0.00% | 5,854 | Mean: 52.37, Range: [52.28, 52.43] | Latitude coordinate (Amsterdam range) |
-| `longitude` | float64 | 0.00% | 9,032 | Mean: 4.89, Range: [4.73, 5.08] | Longitude coordinate (Amsterdam range) |
+| Field             | Type    | Missing Rate | Unique Values | Key Statistics                     | Business Meaning                       |
+| ----------------- | ------- | ------------ | ------------- | ---------------------------------- | -------------------------------------- |
+| `neighbourhood` | object  | 0.00%        | 22            | -                                  | Neighborhood (22 neighborhoods)        |
+| `latitude`      | float64 | 0.00%        | 5,854         | Mean: 52.37, Range: [52.28, 52.43] | Latitude coordinate (Amsterdam range)  |
+| `longitude`     | float64 | 0.00%        | 9,032         | Mean: 4.89, Range: [4.73, 5.08]    | Longitude coordinate (Amsterdam range) |
 
 **Key Insights**:
 
@@ -731,19 +704,19 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Listing Characteristics Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `room_type` | object | 0.00% | 4 | - | Room type (entire home/private room/shared room/hotel room) |
-| `price` | float64 | 0.00% | 3,234 | Mean: €156.91, Median: €130.00, Range: [€0, €8,000] | Price (€/night) |
+| Field         | Type    | Missing Rate | Unique Values | Key Statistics                                          | Business Meaning                                            |
+| ------------- | ------- | ------------ | ------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
+| `room_type` | object  | 0.00%        | 4             | -                                                       | Room type (entire home/private room/shared room/hotel room) |
+| `price`     | float64 | 0.00%        | 3,234         | Mean: €156.91, Median: €130.00, Range: [€0, €8,000] | Price (€/night)                                            |
 
 **Room Type Distribution**:
 
-| Room Type | Count | Percentage | Avg Price | Median Price |
-|-----------|-------|------------|-----------|--------------|
-| Entire home/apt | 12,536 | 77.8% | €170.82 | €144.00 |
-| Private room | 3,434 | 21.3% | €108.03 | €85.00 |
-| Hotel room | 104 | 0.6% | €120.07 | €111.00 |
-| Shared room | 42 | 0.3% | €92.31 | €63.00 |
+| Room Type       | Count  | Percentage | Avg Price | Median Price |
+| --------------- | ------ | ---------- | --------- | ------------ |
+| Entire home/apt | 12,536 | 77.8%      | €170.82  | €144.00     |
+| Private room    | 3,434  | 21.3%      | €108.03  | €85.00      |
+| Hotel room      | 104    | 0.6%       | €120.07  | €111.00     |
+| Shared room     | 42     | 0.3%       | €92.31   | €63.00      |
 
 **Price Distribution Characteristics**:
 
@@ -754,9 +727,9 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Booking Rules Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `minimum_nights` | int64 | 0.00% | 89 | Mean: 4.5 days, Median: 3.0 days, Range: [1, 365] | Minimum nights |
+| Field              | Type  | Missing Rate | Unique Values | Key Statistics                                    | Business Meaning |
+| ------------------ | ----- | ------------ | ------------- | ------------------------------------------------- | ---------------- |
+| `minimum_nights` | int64 | 0.00%        | 89            | Mean: 4.5 days, Median: 3.0 days, Range: [1, 365] | Minimum nights   |
 
 **Key Insights**:
 
@@ -766,12 +739,12 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Review-related Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `number_of_reviews` | int64 | 0.00% | 878 | Mean: 24.6, Median: 8.0, Max: 877 | Total review count |
-| `last_review` | object | 12.95% | 1,024 | - | Last review date (filled with 0 for missing) |
-| `reviews_per_month` | float64 | 12.95% | 1,024 | Mean: 1.39, Median: 0.54, Max: 107.84 | Average monthly reviews (filled with 0 for missing) |
-| `number_of_reviews_ltm` | int64 | 0.00% | 423 | Mean: 1.39, Median: 0.0, Max: 422 | Last 12 months review count |
+| Field                     | Type    | Missing Rate | Unique Values | Key Statistics                        | Business Meaning                                    |
+| ------------------------- | ------- | ------------ | ------------- | ------------------------------------- | --------------------------------------------------- |
+| `number_of_reviews`     | int64   | 0.00%        | 878           | Mean: 24.6, Median: 8.0, Max: 877     | Total review count                                  |
+| `last_review`           | object  | 12.95%       | 1,024         | -                                     | Last review date (filled with 0 for missing)        |
+| `reviews_per_month`     | float64 | 12.95%       | 1,024         | Mean: 1.39, Median: 0.54, Max: 107.84 | Average monthly reviews (filled with 0 for missing) |
+| `number_of_reviews_ltm` | int64   | 0.00%        | 423           | Mean: 1.39, Median: 0.0, Max: 422     | Last 12 months review count                         |
 
 **Review Pattern Characteristics**:
 
@@ -783,9 +756,9 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Availability Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `availability_365` | int64 | 0.00% | 366 | Mean: 55.3 days, Median: 0 days, Range: [0, 365] | Available days per year |
+| Field                | Type  | Missing Rate | Unique Values | Key Statistics                                   | Business Meaning        |
+| -------------------- | ----- | ------------ | ------------- | ------------------------------------------------ | ----------------------- |
+| `availability_365` | int64 | 0.00%        | 366           | Mean: 55.3 days, Median: 0 days, Range: [0, 365] | Available days per year |
 
 **Occupancy Rate Statistics**:
 
@@ -798,9 +771,9 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Other Fields**:
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `license` | object | 71.74% | 4,555 | - | License information (high missing rate) |
+| Field       | Type   | Missing Rate | Unique Values | Key Statistics | Business Meaning                        |
+| ----------- | ------ | ------------ | ------------- | -------------- | --------------------------------------- |
+| `license` | object | 71.74%       | 4,555         | -              | License information (high missing rate) |
 
 **Key Insights**:
 
@@ -836,7 +809,6 @@ Through validation analysis, relationships between all datasets are clear and da
   3. Centrum-West: 1,746 listings (10.8%)
   4. Centrum-Oost: 1,372 listings (8.5%)
   5. Westerpark: 1,205 listings (7.5%)
-
 - **High Geographic Concentration**: Top 5 neighborhoods concentrate over half of listings
 
 **Review Pattern Characteristics**:
@@ -876,20 +848,20 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Basic Dataset Information**:
 
-| Metric | Value |
-|--------|-------|
-| Total Records | 397,185 |
-| Columns | 2 |
-| Unique Listings | 14,029 |
-| Average Reviews per Listing | 28.3 |
-| Time Span | 2009-03-30 to 2021-09-07 (4,544 days) |
+| Metric                      | Value                                 |
+| --------------------------- | ------------------------------------- |
+| Total Records               | 397,185                               |
+| Columns                     | 2                                     |
+| Unique Listings             | 14,029                                |
+| Average Reviews per Listing | 28.3                                  |
+| Time Span                   | 2009-03-30 to 2021-09-07 (4,544 days) |
 
 #### 5.2.2 Field Analysis
 
-| Field | Type | Missing Rate | Unique Values | Key Statistics | Business Meaning |
-|-------|------|--------------|---------------|----------------|------------------|
-| `listing_id` | int64 | 0.00% | 14,029 | Mean: 28.3, Median: 10.0, Max: 877 | Listing ID (linked to listings.csv) |
-| `date` | object → datetime | 0.00% | 3,844 | Earliest: 2009-03-30, Latest: 2021-09-07 | Review date |
+| Field          | Type               | Missing Rate | Unique Values | Key Statistics                           | Business Meaning                    |
+| -------------- | ------------------ | ------------ | ------------- | ---------------------------------------- | ----------------------------------- |
+| `listing_id` | int64              | 0.00%        | 14,029        | Mean: 28.3, Median: 10.0, Max: 877       | Listing ID (linked to listings.csv) |
+| `date`       | object → datetime | 0.00%        | 3,844         | Earliest: 2009-03-30, Latest: 2021-09-07 | Review date                         |
 
 **Key Insights**:
 
@@ -901,14 +873,14 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Reviews Trend by Year**:
 
-| Year | Reviews | Description |
-|------|---------|-------------|
-| 2009 | 12 | Initial stage |
-| 2010-2012 | 41-1,602 | Rapid growth period |
-| 2013-2016 | 5,534-49,425 | Rapid development period |
-| 2017-2019 | 69,946-95,313 | **Peak Period** (2019 peak) |
-| 2020 | 31,605 | **COVID-19 Impact** (66.8% decline) |
-| 2021 | 17,920 | Continued decline (only through September) |
+| Year      | Reviews       | Description                                |
+| --------- | ------------- | ------------------------------------------ |
+| 2009      | 12            | Initial stage                              |
+| 2010-2012 | 41-1,602      | Rapid growth period                        |
+| 2013-2016 | 5,534-49,425  | Rapid development period                   |
+| 2017-2019 | 69,946-95,313 | **Peak Period** (2019 peak)          |
+| 2020      | 31,605        | **COVID-19 Impact** (66.8% decline)  |
+| 2021      | 17,920        | Continued decline (only through September) |
 
 **Key Findings**:
 
@@ -918,12 +890,12 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Seasonal Pattern**:
 
-| Month | Avg Reviews | Description |
-|-------|-------------|-------------|
-| July-August (Summer) | 42,524-48,155 | **Peak Tourist Season** |
-| April-June (Spring) | 35,182-37,742 | Peak season |
-| September-October (Fall) | 36,092-38,215 | Peak season |
-| November-March (Winter) | 22,042-26,728 | **Low Tourist Season** |
+| Month                    | Avg Reviews   | Description                   |
+| ------------------------ | ------------- | ----------------------------- |
+| July-August (Summer)     | 42,524-48,155 | **Peak Tourist Season** |
+| April-June (Spring)      | 35,182-37,742 | Peak season                   |
+| September-October (Fall) | 36,092-38,215 | Peak season                   |
+| November-March (Winter)  | 22,042-26,728 | **Low Tourist Season**  |
 
 **Key Findings**:
 
@@ -973,20 +945,20 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Basic Dataset Information**:
 
-| Metric | Value |
-|--------|-------|
-| Total Records | 21,210 |
-| Columns | 3 |
-| Unique Listings | 16,113 |
-| Average Records per Listing | 1.3 |
+| Metric                      | Value  |
+| --------------------------- | ------ |
+| Total Records               | 21,210 |
+| Columns                     | 3      |
+| Unique Listings             | 16,113 |
+| Average Records per Listing | 1.3    |
 
 #### 5.3.2 Field Analysis
 
-| Field | Type | Missing Rate | Key Statistics | Business Meaning |
-|-------|------|--------------|----------------|------------------|
-| `listing_id` | int64 | 0.00% | Unique values: 16,113 | Listing ID (linked to listings.csv) |
-| `available` | object | 0.00% | 't': available, 'f': unavailable | Availability status (t=available, f=unavailable) |
-| `count` | int64 | 0.00% | Mean: 277.3 days, Range: [1, 366] | Day count |
+| Field          | Type   | Missing Rate | Key Statistics                    | Business Meaning                                 |
+| -------------- | ------ | ------------ | --------------------------------- | ------------------------------------------------ |
+| `listing_id` | int64  | 0.00%        | Unique values: 16,113             | Listing ID (linked to listings.csv)              |
+| `available`  | object | 0.00%        | 't': available, 'f': unavailable  | Availability status (t=available, f=unavailable) |
+| `count`      | int64  | 0.00%        | Mean: 277.3 days, Range: [1, 366] | Day count                                        |
 
 #### 5.3.3 Occupancy Rate Analysis
 
@@ -1042,19 +1014,19 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Basic Dataset Information**:
 
-| Metric | Value |
-|--------|-------|
-| Total Records | 22 |
-| Columns | 2 |
-| Unique Neighbourhoods | 22 |
-| Match Rate with listings | 100% |
+| Metric                   | Value |
+| ------------------------ | ----- |
+| Total Records            | 22    |
+| Columns                  | 2     |
+| Unique Neighbourhoods    | 22    |
+| Match Rate with listings | 100%  |
 
 #### 5.4.2 Field Analysis
 
-| Field | Type | Missing Rate | Unique Values | Business Meaning |
-|-------|------|--------------|---------------|------------------|
-| `neighbourhood_group` | object | 100.00% | 0 | Neighborhood group (all empty, deleted) |
-| `neighbourhood` | object | 0.00% | 22 | Neighborhood name (complete) |
+| Field                   | Type   | Missing Rate | Unique Values | Business Meaning                        |
+| ----------------------- | ------ | ------------ | ------------- | --------------------------------------- |
+| `neighbourhood_group` | object | 100.00%      | 0             | Neighborhood group (all empty, deleted) |
+| `neighbourhood`       | object | 0.00%        | 22            | Neighborhood name (complete)            |
 
 **All Neighbourhoods List**:
 
@@ -1091,18 +1063,18 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Listings Count by Neighbourhood** (Top 10):
 
-| Rank | Neighbourhood | Count | Percentage |
-|------|---------------|-------|------------|
-| 1 | De Baarsjes - Oud-West | 2,701 | 16.8% |
-| 2 | De Pijp - Rivierenbuurt | 1,986 | 12.3% |
-| 3 | Centrum-West | 1,746 | 10.8% |
-| 4 | Centrum-Oost | 1,372 | 8.5% |
-| 5 | Westerpark | 1,205 | 7.5% |
-| 6 | Zuid | 1,196 | 7.4% |
-| 7 | Oud-Oost | 1,032 | 6.4% |
-| 8 | Bos en Lommer | 931 | 5.8% |
-| 9 | Oostelijk Havengebied - Indische Buurt | 733 | 4.5% |
-| 10 | Oud-Noord | 518 | 3.2% |
+| Rank | Neighbourhood                          | Count | Percentage |
+| ---- | -------------------------------------- | ----- | ---------- |
+| 1    | De Baarsjes - Oud-West                 | 2,701 | 16.8%      |
+| 2    | De Pijp - Rivierenbuurt                | 1,986 | 12.3%      |
+| 3    | Centrum-West                           | 1,746 | 10.8%      |
+| 4    | Centrum-Oost                           | 1,372 | 8.5%       |
+| 5    | Westerpark                             | 1,205 | 7.5%       |
+| 6    | Zuid                                   | 1,196 | 7.4%       |
+| 7    | Oud-Oost                               | 1,032 | 6.4%       |
+| 8    | Bos en Lommer                          | 931   | 5.8%       |
+| 9    | Oostelijk Havengebied - Indische Buurt | 733   | 4.5%       |
+| 10   | Oud-Noord                              | 518   | 3.2%       |
 
 **Key Insights**:
 
@@ -1126,13 +1098,13 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Basic Dataset Information**:
 
-| Metric | Value |
-|--------|-------|
-| Total Records | 16,116 |
-| Columns | 74 |
-| listings.csv Columns | 17 |
-| Extra Fields | 57 |
-| Record Match Rate | 100% (all ids match exactly) |
+| Metric               | Value                        |
+| -------------------- | ---------------------------- |
+| Total Records        | 16,116                       |
+| Columns              | 74                           |
+| listings.csv Columns | 17                           |
+| Extra Fields         | 57                           |
+| Record Match Rate    | 100% (all ids match exactly) |
 
 #### 5.5.2 Field Comparison Analysis
 
@@ -1159,14 +1131,14 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Important Fields Missing Rate**:
 
-| Field | Missing Rate | Description |
-|-------|--------------|-------------|
-| `host_since` | 0.0% | Host registration time (complete) |
-| `host_is_superhost` | 0.0% | Whether superhost (complete) |
-| `description` | 1.4% | Listing description (almost complete) |
-| `host_response_time` | 68.8% | Host response time (high missing rate) |
-| `host_response_rate` | 68.8% | Host response rate (high missing rate) |
-| `host_acceptance_rate` | 67.9% | Host acceptance rate (high missing rate) |
+| Field                    | Missing Rate | Description                              |
+| ------------------------ | ------------ | ---------------------------------------- |
+| `host_since`           | 0.0%         | Host registration time (complete)        |
+| `host_is_superhost`    | 0.0%         | Whether superhost (complete)             |
+| `description`          | 1.4%         | Listing description (almost complete)    |
+| `host_response_time`   | 68.8%        | Host response time (high missing rate)   |
+| `host_response_rate`   | 68.8%        | Host response rate (high missing rate)   |
+| `host_acceptance_rate` | 67.9%        | Host acceptance rate (high missing rate) |
 
 **Key Insights**:
 
@@ -1201,15 +1173,15 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Correlation Matrix**:
 
-| Variable | price | minimum_nights | number_of_reviews | reviews_per_month | calculated_host_listings_count | availability_365 | number_of_reviews_ltm |
-|----------|-------|----------------|-------------------|-------------------|-------------------------------|------------------|----------------------|
-| **price** | 1.000 | 0.022 | -0.065 | -0.045 | 0.005 | **0.111** | -0.031 |
-| **minimum_nights** | 0.022 | 1.000 | -0.011 | -0.022 | -0.017 | 0.070 | -0.028 |
-| **number_of_reviews** | -0.065 | -0.011 | 1.000 | **0.533** | 0.017 | 0.262 | 0.415 |
-| **reviews_per_month** | -0.045 | -0.022 | **0.533** | 1.000 | 0.110 | 0.239 | **0.672** |
-| **calculated_host_listings_count** | 0.005 | -0.017 | 0.017 | 0.110 | 1.000 | 0.211 | 0.104 |
-| **availability_365** | **0.111** | 0.070 | 0.262 | 0.239 | 0.211 | 1.000 | 0.216 |
-| **number_of_reviews_ltm** | -0.031 | -0.028 | 0.415 | **0.672** | 0.104 | 0.216 | 1.000 |
+| Variable                                 | price           | minimum_nights | number_of_reviews | reviews_per_month | calculated_host_listings_count | availability_365 | number_of_reviews_ltm |
+| ---------------------------------------- | --------------- | -------------- | ----------------- | ----------------- | ------------------------------ | ---------------- | --------------------- |
+| **price**                          | 1.000           | 0.022          | -0.065            | -0.045            | 0.005                          | **0.111**  | -0.031                |
+| **minimum_nights**                 | 0.022           | 1.000          | -0.011            | -0.022            | -0.017                         | 0.070            | -0.028                |
+| **number_of_reviews**              | -0.065          | -0.011         | 1.000             | **0.533**   | 0.017                          | 0.262            | 0.415                 |
+| **reviews_per_month**              | -0.045          | -0.022         | **0.533**   | 1.000             | 0.110                          | 0.239            | **0.672**       |
+| **calculated_host_listings_count** | 0.005           | -0.017         | 0.017             | 0.110             | 1.000                          | 0.211            | 0.104                 |
+| **availability_365**               | **0.111** | 0.070          | 0.262             | 0.239             | 0.211                          | 1.000            | 0.216                 |
+| **number_of_reviews_ltm**          | -0.031          | -0.028         | 0.415             | **0.672**   | 0.104                          | 0.216            | 1.000                 |
 
 **Correlation Heatmap**:
 
@@ -1228,14 +1200,14 @@ Through validation analysis, relationships between all datasets are clear and da
 
 #### 6.1.1 Price Correlation with Other Variables
 
-| Variable | Correlation | Interpretation |
-|----------|-------------|----------------|
-| **availability_365** | **0.111** | Weak positive correlation: More available days, slightly higher price |
-| **minimum_nights** | 0.022 | Almost no correlation: Minimum nights unrelated to price |
-| **calculated_host_listings_count** | 0.005 | Almost no correlation: Host listing count unrelated to price |
-| **number_of_reviews_ltm** | -0.031 | Weak negative correlation: Recent review count slightly negatively correlated with price |
-| **reviews_per_month** | -0.045 | Weak negative correlation: Review frequency slightly negatively correlated with price |
-| **number_of_reviews** | -0.065 | Weak negative correlation: Review count slightly negatively correlated with price |
+| Variable                                 | Correlation     | Interpretation                                                                           |
+| ---------------------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
+| **availability_365**               | **0.111** | Weak positive correlation: More available days, slightly higher price                    |
+| **minimum_nights**                 | 0.022           | Almost no correlation: Minimum nights unrelated to price                                 |
+| **calculated_host_listings_count** | 0.005           | Almost no correlation: Host listing count unrelated to price                             |
+| **number_of_reviews_ltm**          | -0.031          | Weak negative correlation: Recent review count slightly negatively correlated with price |
+| **reviews_per_month**              | -0.045          | Weak negative correlation: Review frequency slightly negatively correlated with price    |
+| **number_of_reviews**              | -0.065          | Weak negative correlation: Review count slightly negatively correlated with price        |
 
 **Key Findings**:
 
@@ -1281,12 +1253,12 @@ Through validation analysis, relationships between all datasets are clear and da
 
 #### 6.2.1 Room Type vs Price
 
-| Room Type | Avg Price | Median Price | Count |
-|-----------|-----------|--------------|-------|
-| Entire home/apt | €170.82 | €144.00 | 12,536 |
-| Hotel room | €120.07 | €111.00 | 104 |
-| Private room | €108.03 | €85.00 | 3,434 |
-| Shared room | €92.31 | €63.00 | 42 |
+| Room Type       | Avg Price | Median Price | Count  |
+| --------------- | --------- | ------------ | ------ |
+| Entire home/apt | €170.82  | €144.00     | 12,536 |
+| Hotel room      | €120.07  | €111.00     | 104    |
+| Private room    | €108.03  | €85.00      | 3,434  |
+| Shared room     | €92.31   | €63.00      | 42     |
 
 **Key Findings**:
 
@@ -1297,11 +1269,11 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Top 10 Neighbourhoods by Average Price**:
 
-| Rank | Neighbourhood | Avg Price | Count |
-|------|---------------|-----------|-------|
-| 1 | Centrum-West | [To be calculated] | 1,746 |
-| 2 | Centrum-Oost | [To be calculated] | 1,372 |
-| ... | ... | ... | ... |
+| Rank | Neighbourhood | Avg Price          | Count |
+| ---- | ------------- | ------------------ | ----- |
+| 1    | Centrum-West  | [To be calculated] | 1,746 |
+| 2    | Centrum-Oost  | [To be calculated] | 1,372 |
+| ...  | ...           | ...                | ...   |
 
 **Key Findings**:
 
@@ -1310,12 +1282,12 @@ Through validation analysis, relationships between all datasets are clear and da
 
 #### 6.2.3 Room Type vs Reviews
 
-| Room Type | Avg Reviews | Median Reviews |
-|-----------|-------------|----------------|
-| Shared room | 61.52 | 16.5 |
-| Private room | 57.33 | 12.0 |
-| Hotel room | 54.63 | 23.0 |
-| Entire home/apt | 15.32 | 7.0 |
+| Room Type       | Avg Reviews | Median Reviews |
+| --------------- | ----------- | -------------- |
+| Shared room     | 61.52       | 16.5           |
+| Private room    | 57.33       | 12.0           |
+| Hotel room      | 54.63       | 23.0           |
+| Entire home/apt | 15.32       | 7.0            |
 
 **Key Findings**:
 
@@ -1326,12 +1298,12 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Top 10 Neighbourhoods by Average Reviews**:
 
-| Rank | Neighbourhood | Avg Reviews | Count |
-|------|---------------|-------------|-------|
-| 1 | Centrum-West | 42.32 | 1,746 |
-| 2 | Centrum-Oost | 36.27 | 1,372 |
-| 3 | De Aker - Nieuw Sloten | 33.22 | 116 |
-| ... | ... | ... | ... |
+| Rank | Neighbourhood          | Avg Reviews | Count |
+| ---- | ---------------------- | ----------- | ----- |
+| 1    | Centrum-West           | 42.32       | 1,746 |
+| 2    | Centrum-Oost           | 36.27       | 1,372 |
+| 3    | De Aker - Nieuw Sloten | 33.22       | 116   |
+| ...  | ...                    | ...         | ...   |
 
 **Key Findings**:
 
@@ -1396,21 +1368,21 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Reviews Trend by Year**:
 
-| Year | Reviews | YoY Growth | Description |
-|------|---------|------------|-------------|
-| 2009 | 12 | - | Initial stage |
-| 2010 | 41 | +241.7% | Rapid growth |
-| 2011 | 410 | +900.0% | Rapid growth |
-| 2012 | 1,602 | +290.7% | Rapid development |
-| 2013 | 5,534 | +245.4% | Rapid development |
-| 2014 | 13,199 | +138.5% | Rapid development |
-| 2015 | 27,918 | +111.5% | Rapid development |
-| 2016 | 49,425 | +77.0% | Rapid development |
-| 2017 | 69,946 | +41.5% | Rapid development |
-| 2018 | 84,260 | +20.4% | Growth slowing |
-| 2019 | 95,313 | +13.1% | **Peak Year** |
-| 2020 | 31,605 | -66.8% | **COVID-19 Impact** |
-| 2021 | 17,920 | -43.3% | Continued decline (only through September) |
+| Year | Reviews | YoY Growth | Description                                |
+| ---- | ------- | ---------- | ------------------------------------------ |
+| 2009 | 12      | -          | Initial stage                              |
+| 2010 | 41      | +241.7%    | Rapid growth                               |
+| 2011 | 410     | +900.0%    | Rapid growth                               |
+| 2012 | 1,602   | +290.7%    | Rapid development                          |
+| 2013 | 5,534   | +245.4%    | Rapid development                          |
+| 2014 | 13,199  | +138.5%    | Rapid development                          |
+| 2015 | 27,918  | +111.5%    | Rapid development                          |
+| 2016 | 49,425  | +77.0%     | Rapid development                          |
+| 2017 | 69,946  | +41.5%     | Rapid development                          |
+| 2018 | 84,260  | +20.4%     | Growth slowing                             |
+| 2019 | 95,313  | +13.1%     | **Peak Year**                        |
+| 2020 | 31,605  | -66.8%     | **COVID-19 Impact**                  |
+| 2021 | 17,920  | -43.3%     | Continued decline (only through September) |
 
 **Review Time Trend Visualization**:
 
@@ -1436,29 +1408,29 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Average Reviews by Month**:
 
-| Month | Avg Reviews | Quarter | Description |
-|-------|-------------|---------|-------------|
-| January (Jan) | 24,688 | Q1 | Low season |
-| February (Feb) | 24,773 | Q1 | Low season |
-| March (Mar) | 26,205 | Q1 | Low season |
-| April (Apr) | 35,182 | Q2 | Peak season begins |
-| May (May) | 37,742 | Q2 | Peak season |
-| June (Jun) | 35,839 | Q2 | Peak season |
-| July (Jul) | 42,524 | Q3 | **Peak Season** |
-| August (Aug) | 48,155 | Q3 | **Peak Season** |
-| September (Sep) | 38,215 | Q3 | Peak season |
-| October (Oct) | 36,092 | Q4 | Peak season |
-| November (Nov) | 25,728 | Q4 | Low season begins |
-| December (Dec) | 22,042 | Q4 | Low season |
+| Month           | Avg Reviews | Quarter | Description           |
+| --------------- | ----------- | ------- | --------------------- |
+| January (Jan)   | 24,688      | Q1      | Low season            |
+| February (Feb)  | 24,773      | Q1      | Low season            |
+| March (Mar)     | 26,205      | Q1      | Low season            |
+| April (Apr)     | 35,182      | Q2      | Peak season begins    |
+| May (May)       | 37,742      | Q2      | Peak season           |
+| June (Jun)      | 35,839      | Q2      | Peak season           |
+| July (Jul)      | 42,524      | Q3      | **Peak Season** |
+| August (Aug)    | 48,155      | Q3      | **Peak Season** |
+| September (Sep) | 38,215      | Q3      | Peak season           |
+| October (Oct)   | 36,092      | Q4      | Peak season           |
+| November (Nov)  | 25,728      | Q4      | Low season begins     |
+| December (Dec)  | 22,042      | Q4      | Low season            |
 
 **Average Reviews by Quarter**:
 
-| Quarter | Avg Reviews | Description |
-|---------|-------------|-------------|
-| Q1 (Jan-Mar) | 25,222 | **Low Season** |
-| Q2 (Apr-Jun) | 36,254 | Peak season |
-| Q3 (Jul-Sep) | 42,964 | **Peak Season** |
-| Q4 (Oct-Dec) | 27,621 | Low season |
+| Quarter      | Avg Reviews | Description           |
+| ------------ | ----------- | --------------------- |
+| Q1 (Jan-Mar) | 25,222      | **Low Season**  |
+| Q2 (Apr-Jun) | 36,254      | Peak season           |
+| Q3 (Jul-Sep) | 42,964      | **Peak Season** |
+| Q4 (Oct-Dec) | 27,621      | Low season            |
 
 **Peak and Low Season Identification**:
 
@@ -1485,28 +1457,28 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **Pre-COVID vs COVID Period**:
 
-| Metric | Pre-COVID (2009-2019) | COVID Period (2020-2021.09) | Change |
-|--------|----------------------|----------------------------|--------|
-| Average monthly reviews | 2,634 reviews | 2,358 reviews | **-10.5%** |
-| 2020 total reviews | - | 31,605 reviews | -66.8% vs 2019 |
-| 2021 total reviews (through September) | - | 17,920 reviews | -43.3% vs 2020 |
+| Metric                                 | Pre-COVID (2009-2019) | COVID Period (2020-2021.09) | Change           |
+| -------------------------------------- | --------------------- | --------------------------- | ---------------- |
+| Average monthly reviews                | 2,634 reviews         | 2,358 reviews               | **-10.5%** |
+| 2020 total reviews                     | -                     | 31,605 reviews              | -66.8% vs 2019   |
+| 2021 total reviews (through September) | -                     | 17,920 reviews              | -43.3% vs 2020   |
 
 **Monthly Reviews in 2020**:
 
-| Month | Reviews | Description |
-|-------|---------|-------------|
-| January (Jan) | 6,245 | Normal level |
-| February (Feb) | 6,475 | Normal level |
-| March (Mar) | 3,293 | **Started declining** (-49.1%) |
-| April (Apr) | 130 | **Lowest point** (-98.0%) |
-| May (May) | 301 | Started recovering |
-| June (Jun) | 1,354 | Gradually recovering |
-| July (Jul) | 3,839 | Recovered to normal level |
-| August (Aug) | 4,840 | Recovered to normal level |
-| September (Sep) | 2,761 | Slightly declined |
-| October (Oct) | 1,163 | Declined |
-| November (Nov) | 545 | Declined |
-| December (Dec) | 659 | Declined |
+| Month           | Reviews | Description                          |
+| --------------- | ------- | ------------------------------------ |
+| January (Jan)   | 6,245   | Normal level                         |
+| February (Feb)  | 6,475   | Normal level                         |
+| March (Mar)     | 3,293   | **Started declining** (-49.1%) |
+| April (Apr)     | 130     | **Lowest point** (-98.0%)      |
+| May (May)       | 301     | Started recovering                   |
+| June (Jun)      | 1,354   | Gradually recovering                 |
+| July (Jul)      | 3,839   | Recovered to normal level            |
+| August (Aug)    | 4,840   | Recovered to normal level            |
+| September (Sep) | 2,761   | Slightly declined                    |
+| October (Oct)   | 1,163   | Declined                             |
+| November (Nov)  | 545     | Declined                             |
+| December (Dec)  | 659     | Declined                             |
 
 **Key Findings**:
 
@@ -1536,10 +1508,10 @@ Through validation analysis, relationships between all datasets are clear and da
 
 **New vs Mature Listings**:
 
-| Metric | New Listings (<12 months) | Mature Listings (≥12 months) |
-|--------|---------------------------|------------------------------|
-| Count | 5,932 listings (42.3%) | 8,097 listings (57.7%) |
-| Avg Reviews | 5.6 reviews | 45.0 reviews |
+| Metric      | New Listings (<12 months)   | Mature Listings (≥12 months) |
+| ----------- | --------------------------- | ----------------------------- |
+| Count       | 5,932 listings (42.3%)      | 8,097 listings (57.7%)        |
+| Avg Reviews | 5.6 reviews                 | 45.0 reviews                  |
 | Description | Newly listed, fewer reviews | Mature listings, more reviews |
 
 **Key Findings**:
@@ -1612,9 +1584,7 @@ df['is_covid_period'] = df['year'].isin([2020, 2021]).astype(int)
 
 ---
 
-**Document Last Updated**: 2025-01-27  
-**Document Status**: 📝 **Chapters 1-7 Completed** - Remaining chapters to be added  
-**Completed Sections**:
+**Document Last Updated**: 2025-01-27**Document Status**: 📝 **Chapters 1-7 Completed** - Remaining chapters to be added**Completed Sections**:
 
 - ✅ Chapter 1: Project Overview & Business Understanding
 - ✅ Chapter 2: Data Quality & Scale Overview
@@ -1638,18 +1608,18 @@ df['is_covid_period'] = df['year'].isin([2020, 2021]).astype(int)
 
 **Top 10 Neighbourhoods by Listing Count**:
 
-| Rank | Neighbourhood | Count | Percentage |
-|------|---------------|-------|------------|
-| 1 | De Baarsjes - Oud-West | 2,701 | 16.8% |
-| 2 | De Pijp - Rivierenbuurt | 1,986 | 12.3% |
-| 3 | Centrum-West | 1,746 | 10.8% |
-| 4 | Centrum-Oost | 1,372 | 8.5% |
-| 5 | Westerpark | 1,205 | 7.5% |
-| 6 | Zuid | 1,196 | 7.4% |
-| 7 | Oud-Oost | 1,032 | 6.4% |
-| 8 | Bos en Lommer | 931 | 5.8% |
-| 9 | Oostelijk Havengebied - Indische Buurt | 733 | 4.5% |
-| 10 | Oud-Noord | 518 | 3.2% |
+| Rank | Neighbourhood                          | Count | Percentage |
+| ---- | -------------------------------------- | ----- | ---------- |
+| 1    | De Baarsjes - Oud-West                 | 2,701 | 16.8%      |
+| 2    | De Pijp - Rivierenbuurt                | 1,986 | 12.3%      |
+| 3    | Centrum-West                           | 1,746 | 10.8%      |
+| 4    | Centrum-Oost                           | 1,372 | 8.5%       |
+| 5    | Westerpark                             | 1,205 | 7.5%       |
+| 6    | Zuid                                   | 1,196 | 7.4%       |
+| 7    | Oud-Oost                               | 1,032 | 6.4%       |
+| 8    | Bos en Lommer                          | 931   | 5.8%       |
+| 9    | Oostelijk Havengebied - Indische Buurt | 733   | 4.5%       |
+| 10   | Oud-Noord                              | 518   | 3.2%       |
 
 **Geographic Coordinates Statistics**:
 
@@ -1676,18 +1646,18 @@ df['is_covid_period'] = df['year'].isin([2020, 2021]).astype(int)
 
 **Top 10 Neighbourhoods by Average Price**:
 
-| Rank | Neighbourhood | Avg Price | Median Price | Count |
-|------|---------------|-----------|--------------|-------|
-| 1 | Centrum-Oost | €196.55 | €150.00 | 1,368 |
-| 2 | Centrum-West | €186.45 | €150.00 | 1,742 |
-| 3 | IJburg - Zeeburgereiland | €175.16 | €146.00 | 396 |
-| 4 | Zuid | €169.90 | €135.00 | 1,194 |
-| 5 | De Pijp - Rivierenbuurt | €163.18 | €140.00 | 1,985 |
-| 6 | Oud-Noord | €161.24 | €125.00 | 517 |
-| 7 | Watergraafsmeer | €153.78 | €125.00 | 476 |
-| 8 | Oud-Oost | €151.80 | €129.00 | 1,032 |
-| 9 | Westerpark | €149.76 | €129.00 | 1,205 |
-| 10 | De Baarsjes - Oud-West | €149.04 | €129.50 | 2,700 |
+| Rank | Neighbourhood            | Avg Price | Median Price | Count |
+| ---- | ------------------------ | --------- | ------------ | ----- |
+| 1    | Centrum-Oost             | €196.55  | €150.00     | 1,368 |
+| 2    | Centrum-West             | €186.45  | €150.00     | 1,742 |
+| 3    | IJburg - Zeeburgereiland | €175.16  | €146.00     | 396   |
+| 4    | Zuid                     | €169.90  | €135.00     | 1,194 |
+| 5    | De Pijp - Rivierenbuurt  | €163.18  | €140.00     | 1,985 |
+| 6    | Oud-Noord                | €161.24  | €125.00     | 517   |
+| 7    | Watergraafsmeer          | €153.78  | €125.00     | 476   |
+| 8    | Oud-Oost                 | €151.80  | €129.00     | 1,032 |
+| 9    | Westerpark               | €149.76  | €129.00     | 1,205 |
+| 10   | De Baarsjes - Oud-West   | €149.04  | €129.50     | 2,700 |
 
 **Price Geographic Gradient Analysis**:
 
@@ -1698,14 +1668,15 @@ df['is_covid_period'] = df['year'].isin([2020, 2021]).astype(int)
 **Key Findings**:
 
 1. **Location Significantly Affects Price**:
+
    - City center neighborhoods (Centrum-Oost, Centrum-West) have highest prices (€186-€197)
    - Price difference can reach €47 (highest vs lowest)
-
 2. **Clear Price Geographic Gradient**:
+
    - City center → surrounding areas: Price decreases
    - Consistent with urban real estate price distribution patterns
-
 3. **Price-Location Correlation**:
+
    - Location is an important factor affecting price
    - Can be used for price prediction model feature engineering
 
@@ -1715,47 +1686,48 @@ df['is_covid_period'] = df['year'].isin([2020, 2021]).astype(int)
 
 **Top 10 Neighbourhoods by Average Reviews**:
 
-| Rank | Neighbourhood | Avg Reviews | Median Reviews | Total Reviews |
-|------|---------------|-------------|----------------|---------------|
-| 1 | Centrum-West | 42.3 | 13.0 | 73,891 |
-| 2 | Centrum-Oost | 36.3 | 10.0 | 49,760 |
-| 3 | De Aker - Nieuw Sloten | 33.2 | 5.0 | 3,854 |
-| 4 | Bijlmer-Centrum | 30.4 | 7.0 | 2,764 |
-| 5 | Osdorp | 28.6 | 7.0 | 3,262 |
-| 6 | Oud-Noord | 25.8 | 7.0 | 13,378 |
-| 7 | Gaasperdam - Driemond | 25.0 | 7.0 | 2,677 |
-| 8 | Noord-Oost | 24.6 | 7.0 | 5,592 |
-| 9 | Noord-West | 24.1 | 7.0 | 7,798 |
-| 10 | Slotervaart | 23.2 | 6.0 | 8,096 |
+| Rank | Neighbourhood          | Avg Reviews | Median Reviews | Total Reviews |
+| ---- | ---------------------- | ----------- | -------------- | ------------- |
+| 1    | Centrum-West           | 42.3        | 13.0           | 73,891        |
+| 2    | Centrum-Oost           | 36.3        | 10.0           | 49,760        |
+| 3    | De Aker - Nieuw Sloten | 33.2        | 5.0            | 3,854         |
+| 4    | Bijlmer-Centrum        | 30.4        | 7.0            | 2,764         |
+| 5    | Osdorp                 | 28.6        | 7.0            | 3,262         |
+| 6    | Oud-Noord              | 25.8        | 7.0            | 13,378        |
+| 7    | Gaasperdam - Driemond  | 25.0        | 7.0            | 2,677         |
+| 8    | Noord-Oost             | 24.6        | 7.0            | 5,592         |
+| 9    | Noord-West             | 24.1        | 7.0            | 7,798         |
+| 10   | Slotervaart            | 23.2        | 6.0            | 8,096         |
 
 **Popular Neighbourhoods Identification**:
 
 **Comprehensive Score Ranking (Top 10)**:
 
-| Rank | Neighbourhood | Score | Listings | Avg Reviews |
-|------|---------------|-------|----------|-------------|
-| 1 | De Baarsjes - Oud-West | 36.20 | 2,701 | 42.3 |
-| 2 | De Pijp - Rivierenbuurt | 29.70 | 1,986 | 36.3 |
-| 3 | Centrum-West | 26.92 | 1,746 | 33.2 |
-| 4 | Centrum-Oost | 23.71 | 1,372 | 30.4 |
-| 5 | Westerpark | 21.99 | 1,205 | 28.6 |
-| 6 | Zuid | 20.28 | 1,196 | 25.8 |
-| 7 | Oud-Oost | 19.14 | 1,032 | 25.0 |
-| 8 | Bos en Lommer | 18.50 | 931 | 24.6 |
-| 9 | Oostelijk Havengebied - Indische Buurt | 17.42 | 733 | 24.1 |
-| 10 | Oud-Noord | 15.99 | 518 | 23.2 |
+| Rank | Neighbourhood                          | Score | Listings | Avg Reviews |
+| ---- | -------------------------------------- | ----- | -------- | ----------- |
+| 1    | De Baarsjes - Oud-West                 | 36.20 | 2,701    | 42.3        |
+| 2    | De Pijp - Rivierenbuurt                | 29.70 | 1,986    | 36.3        |
+| 3    | Centrum-West                           | 26.92 | 1,746    | 33.2        |
+| 4    | Centrum-Oost                           | 23.71 | 1,372    | 30.4        |
+| 5    | Westerpark                             | 21.99 | 1,205    | 28.6        |
+| 6    | Zuid                                   | 20.28 | 1,196    | 25.8        |
+| 7    | Oud-Oost                               | 19.14 | 1,032    | 25.0        |
+| 8    | Bos en Lommer                          | 18.50 | 931      | 24.6        |
+| 9    | Oostelijk Havengebied - Indische Buurt | 17.42 | 733      | 24.1        |
+| 10   | Oud-Noord                              | 15.99 | 518      | 23.2        |
 
 **Key Findings**:
 
 1. **City Center Neighborhoods Have Highest Popularity**:
+
    - Centrum-West and Centrum-Oost review counts significantly higher than other neighborhoods
    - Consistent with tourist city characteristics (tourists prefer city center)
-
 2. **Location Significantly Affects Popularity**:
+
    - City center neighborhoods average review count is 1.5-2 times that of other neighborhoods
    - Location is an important factor affecting popularity
-
 3. **Popular Neighborhood Characteristics**:
+
    - High listing count
    - High review count
    - Moderate price (not highest, but not low)
@@ -1781,11 +1753,11 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 **Analysis Results**:
 
-| Metric | Top 20% | Bottom 80% | Total |
-|--------|---------|-------------|-------|
-| Listings | 3,223 listings | 12,893 listings | 16,116 listings |
-| Reviews | 3,030,000+ reviews | 940,000+ reviews | 3,970,000+ reviews |
-| Review Share | **76.3%** | 23.7% | 100% |
+| Metric       | Top 20%            | Bottom 80%       | Total              |
+| ------------ | ------------------ | ---------------- | ------------------ |
+| Listings     | 3,223 listings     | 12,893 listings  | 16,116 listings    |
+| Reviews      | 3,030,000+ reviews | 940,000+ reviews | 3,970,000+ reviews |
+| Review Share | **76.3%**    | 23.7%            | 100%               |
 
 **Key Findings**:
 
@@ -1803,11 +1775,11 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 **Analysis Results**:
 
-| Metric | Top 20% | Bottom 80% | Total |
-|--------|---------|-------------|-------|
-| Listings | 3,223 listings | 12,893 listings | 16,116 listings |
-| Revenue | €41,000,000+ | €59,000,000+ | €100,000,000+ |
-| Revenue Share | **41.0%** | 59.0% | 100% |
+| Metric        | Top 20%         | Bottom 80%      | Total           |
+| ------------- | --------------- | --------------- | --------------- |
+| Listings      | 3,223 listings  | 12,893 listings | 16,116 listings |
+| Revenue       | €41,000,000+   | €59,000,000+   | €100,000,000+  |
+| Revenue Share | **41.0%** | 59.0%           | 100%            |
 
 **Key Findings**:
 
@@ -1856,15 +1828,15 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 **Price Statistics**:
 
-| Metric | Value |
-|--------|-------|
-| Mean | €157.05/night |
-| Median | €130.00/night |
-| 25th percentile | €97.00/night |
-| 75th percentile | €180.00/night |
-| Std | €173.43/night |
-| Skewness | 26.06 (extremely right-skewed) |
-| Kurtosis | 1,045.09 (leptokurtic distribution) |
+| Metric          | Value                               |
+| --------------- | ----------------------------------- |
+| Mean            | €157.05/night                      |
+| Median          | €130.00/night                      |
+| 25th percentile | €97.00/night                       |
+| 75th percentile | €180.00/night                      |
+| Std             | €173.43/night                      |
+| Skewness        | 26.06 (extremely right-skewed)      |
+| Kurtosis        | 1,045.09 (leptokurtic distribution) |
 
 **Key Findings**:
 
@@ -1874,12 +1846,12 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 #### 9.2.2 Price vs Room Type
 
-| Room Type | Avg Price | Median Price | Std | Count |
-|-----------|-----------|--------------|-----|-------|
-| Entire home/apt | €170.82 | €144.00 | €164.82 | 12,536 |
-| Hotel room | €140.30 | €125.00 | €129.04 | 89 |
-| Private room | €108.03 | €85.00 | €195.44 | 3,434 |
-| Shared room | €92.31 | €63.00 | €91.31 | 42 |
+| Room Type       | Avg Price | Median Price | Std      | Count  |
+| --------------- | --------- | ------------ | -------- | ------ |
+| Entire home/apt | €170.82  | €144.00     | €164.82 | 12,536 |
+| Hotel room      | €140.30  | €125.00     | €129.04 | 89     |
+| Private room    | €108.03  | €85.00      | €195.44 | 3,434  |
+| Shared room     | €92.31   | €63.00      | €91.31  | 42     |
 
 **Key Findings**:
 
@@ -1891,18 +1863,18 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 **Top 10 Neighbourhoods by Average Price**:
 
-| Rank | Neighbourhood | Avg Price | Median Price |
-|------|---------------|-----------|--------------|
-| 1 | Centrum-Oost | €196.55 | €150.00 |
-| 2 | Centrum-West | €186.45 | €150.00 |
-| 3 | IJburg - Zeeburgereiland | €175.16 | €146.00 |
-| 4 | Zuid | €169.90 | €135.00 |
-| 5 | De Pijp - Rivierenbuurt | €163.18 | €140.00 |
-| 6 | Oud-Noord | €161.24 | €125.00 |
-| 7 | Watergraafsmeer | €153.78 | €125.00 |
-| 8 | Oud-Oost | €151.80 | €129.00 |
-| 9 | Westerpark | €149.76 | €129.00 |
-| 10 | De Baarsjes - Oud-West | €149.04 | €129.50 |
+| Rank | Neighbourhood            | Avg Price | Median Price |
+| ---- | ------------------------ | --------- | ------------ |
+| 1    | Centrum-Oost             | €196.55  | €150.00     |
+| 2    | Centrum-West             | €186.45  | €150.00     |
+| 3    | IJburg - Zeeburgereiland | €175.16  | €146.00     |
+| 4    | Zuid                     | €169.90  | €135.00     |
+| 5    | De Pijp - Rivierenbuurt  | €163.18  | €140.00     |
+| 6    | Oud-Noord                | €161.24  | €125.00     |
+| 7    | Watergraafsmeer          | €153.78  | €125.00     |
+| 8    | Oud-Oost                 | €151.80  | €129.00     |
+| 9    | Westerpark               | €149.76  | €129.00     |
+| 10   | De Baarsjes - Oud-West   | €149.04  | €129.50     |
 
 **Key Findings**:
 
@@ -1915,12 +1887,12 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 **Average Price by Review Count Category**:
 
 | Review Category | Avg Price | Median Price | Count |
-|-----------------|-----------|--------------|-------|
-| 0-5 reviews | €153.54 | €129.00 | 4,709 |
-| 6-10 reviews | €156.54 | €130.00 | 2,499 |
-| 11-20 reviews | €155.24 | €133.00 | 2,622 |
-| 21-50 reviews | €165.05 | €139.00 | 2,472 |
-| 50+ reviews | €127.41 | €101.00 | 1,719 |
+| --------------- | --------- | ------------ | ----- |
+| 0-5 reviews     | €153.54  | €129.00     | 4,709 |
+| 6-10 reviews    | €156.54  | €130.00     | 2,499 |
+| 11-20 reviews   | €155.24  | €133.00     | 2,622 |
+| 21-50 reviews   | €165.05  | €139.00     | 2,472 |
+| 50+ reviews     | €127.41  | €101.00     | 1,719 |
 
 **Key Findings**:
 
@@ -1932,12 +1904,12 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 **Average Price by Occupancy Rate Category**:
 
-| Occupancy Category | Avg Price | Median Price | Count |
-|-------------------|-----------|--------------|-------|
-| Low (0-20%) | €184.94 | €141.50 | 1,186 |
-| Medium-Low (20-50%) | €175.06 | €144.00 | 826 |
-| Medium-High (50-80%) | €188.19 | €150.00 | 1,384 |
-| High (80-100%) | €147.07 | €125.00 | 12,517 |
+| Occupancy Category   | Avg Price | Median Price | Count  |
+| -------------------- | --------- | ------------ | ------ |
+| Low (0-20%)          | €184.94  | €141.50     | 1,186  |
+| Medium-Low (20-50%)  | €175.06  | €144.00     | 826    |
+| Medium-High (50-80%) | €188.19  | €150.00     | 1,384  |
+| High (80-100%)       | €147.07  | €125.00     | 12,517 |
 
 **Key Findings**:
 
@@ -1950,14 +1922,14 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 **Average Revenue by Price Range**:
 
 | Price Range | Avg Revenue | Median Revenue | Count |
-|-------------|-------------|---------------|-------|
-| €500+ | €202,278 | €176,008 | 188 |
-| €300-500 | €99,133 | €118,625 | 671 |
-| €200-300 | €71,774 | €81,640 | 1,903 |
-| €150-200 | €55,594 | €62,050 | 2,805 |
-| €100-150 | €41,457 | €43,800 | 5,411 |
-| €50-100 | €26,324 | €29,200 | 4,577 |
-| €0-50 | €13,835 | €14,600 | 546 |
+| ----------- | ----------- | -------------- | ----- |
+| €500+      | €202,278   | €176,008      | 188   |
+| €300-500   | €99,133    | €118,625      | 671   |
+| €200-300   | €71,774    | €81,640       | 1,903 |
+| €150-200   | €55,594    | €62,050       | 2,805 |
+| €100-150   | €41,457    | €43,800       | 5,411 |
+| €50-100    | €26,324    | €29,200       | 4,577 |
+| €0-50      | €13,835    | €14,600       | 546   |
 
 **Key Findings**:
 
@@ -1975,27 +1947,26 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 **Pricing Strategy Recommendations**:
 
 1. **Room Type-Based Pricing Strategy**:
+
    - Entire home/apt: €144-€171 (median-mean)
    - Private room: €85-€108
    - Shared room: €63-€92
-
 2. **Location-Based Pricing Strategy**:
+
    - City center (Centrum): €150-€197
    - Surrounding areas: €125-€150
-
 3. **Popularity-Based Pricing Strategy**:
+
    - Medium review count (21-50 reviews): Can appropriately increase price
    - High review count (50+ reviews): Price can be appropriately lowered to maintain competitiveness
-
 4. **Occupancy Rate-Based Pricing Strategy**:
+
    - High occupancy listings: Can appropriately increase price
    - Low occupancy listings: Need to lower price to increase occupancy rate
 
 ---
 
-**Document Last Updated**: 2025-01-27  
-**Document Status**: 📝 **Chapters 1-9 Completed** - Remaining chapters to be added  
-**Completed Sections**:
+**Document Last Updated**: 2025-01-27**Document Status**: 📝 **Chapters 1-9 Completed** - Remaining chapters to be added**Completed Sections**:
 
 - ✅ Chapter 1: Project Overview & Business Understanding
 - ✅ Chapter 2: Data Quality & Scale Overview
@@ -2180,9 +2151,7 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 
 ---
 
-**Document Last Updated**: 2025-01-27  
-**Document Status**: ✅ **All Chapters Completed**  
-**Completed Sections**:
+**Document Last Updated**: 2025-01-27**Document Status**: ✅ **All Chapters Completed****Completed Sections**:
 
 - ✅ Chapter 1: Project Overview & Business Understanding
 - ✅ Chapter 2: Data Quality & Scale Overview
@@ -2218,4 +2187,3 @@ The Pareto Principle (80/20 rule) states: 80% of results come from 20% of causes
 - ✅ `src/EDA/chapter9_pareto_pricing_analysis.py` - Chapter 9.1 and 9.2 analysis script
 
 **Next Step**: Review and refine the English-only report, ensure all translations are accurate and complete.
-
