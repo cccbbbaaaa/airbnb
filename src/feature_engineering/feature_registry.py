@@ -19,7 +19,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "来自 listings_detailed 的原始评分，保留 0-5 范围",
         "example": "4.85",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Pricing & availability
     {
@@ -28,7 +28,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "移除价格中的 $ 和逗号并转换为数值，缺失填 0",
         "example": "150",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "log_price",
@@ -44,7 +44,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "price_clean / accommodates（若分母为 0 则用 price_clean）",
         "example": "45",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "availability_ratio",
@@ -52,7 +52,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "availability_365 / 365",
         "example": "0.25",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "occupancy_rate",
@@ -69,7 +69,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失值填 0",
         "example": "1.2",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "log_reviews_per_month",
@@ -85,7 +85,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失值填 0",
         "example": "85",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "log_number_of_reviews",
@@ -101,7 +101,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失值填 0",
         "example": "18",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "reviews_growth_ratio",
@@ -109,7 +109,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "(number_of_reviews_l30d + 1) / (number_of_reviews_ltm + 1)",
         "example": "0.25",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Host behaviour
     {
@@ -118,7 +118,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "百分比字段转浮点，缺失填 0",
         "example": "0.98",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_acceptance_rate",
@@ -126,15 +126,31 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "百分比字段转浮点，缺失填 0",
         "example": "0.90",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_activity_score",
         "description": "房东活跃度评分",
         "feature_type": "衍生字段",
-        "logic": "0.5*host_response_rate + 0.3*host_acceptance_rate + 0.2*instant_bookable_flag",
+        "logic": "0.4*host_response_rate + 0.3*host_acceptance_rate + 0.3*host_is_superhost_flag",
         "example": "0.92",
         "source": "派生自 host 行为字段",
+    },
+    {
+        "name": "host_verifications_count",
+        "description": "房东验证方式数量",
+        "feature_type": "衍生字段",
+        "logic": "解析 host_verifications 列表/字典，统计验证方式数量",
+        "example": "3",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_has_gov_id",
+        "description": "是否提供政府ID验证",
+        "feature_type": "衍生字段",
+        "logic": "host_verifications 中包含 'government' → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_is_superhost_flag",
@@ -142,23 +158,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "host_is_superhost in (t,true,1) → 1，否则 0",
         "example": "1",
-        "source": "listings_detailed.xlsx",
-    },
-    {
-        "name": "host_experience_years",
-        "description": "房东经验（年）",
-        "feature_type": "衍生字段",
-        "logic": "2021-09-07 与 host_since 的时间差（年）",
-        "example": "5.3",
-        "source": "listings_detailed.xlsx",
-    },
-    {
-        "name": "host_experience_score",
-        "description": "房东经验综合评分",
-        "feature_type": "衍生字段",
-        "logic": "1.5*superhost_flag + 0.1*经验年限(≤15) + 0.2*log1p(host_listings_count)",
-        "example": "3.1",
-        "source": "派生自 host 字段",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_listings_count",
@@ -166,7 +166,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失填 0",
         "example": "3",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_total_listings_count",
@@ -174,7 +174,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失填 0",
         "example": "6",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Booking preference
     {
@@ -183,7 +183,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "instant_bookable in (t,true,1) → 1，否则 0",
         "example": "0",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "has_license_info",
@@ -191,7 +191,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "license 字段非空 → 1，否则 0",
         "example": "1",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Encoded categorical fields
     {
@@ -200,7 +200,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "room_type 转为类别编码（整租/独立房间等）",
         "example": "0=Entire home/apt",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "property_type_encoded",
@@ -208,7 +208,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "property_type 转为类别编码",
         "example": "12=Houseboat",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "neighbourhood_encoded",
@@ -216,7 +216,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "neighbourhood_cleansed 转为类别编码",
         "example": "5=Centrum-West",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Capacity fields
     {
@@ -225,7 +225,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失填 1",
         "example": "4",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "bedrooms",
@@ -233,7 +233,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失填 'missing'",
         "example": "2",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "beds",
@@ -241,15 +241,23 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "原始字段",
         "logic": "缺失填 'missing'",
         "example": "3",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
-        "name": "bathrooms",
+        "name": "bathrooms_numeric",
         "description": "浴室数量（数值化）",
         "feature_type": "衍生字段",
-        "logic": "从 bathrooms_text 中提取数字，半卫=0.5，缺失标记 missing",
+        "logic": "从 bathrooms_text 中提取数字，缺失填 0",
         "example": "1.5",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "is_shared_bath",
+        "description": "是否为共享浴室",
+        "feature_type": "衍生字段",
+        "logic": "bathrooms_text 中包含 'shared' → 1，否则 0",
+        "example": "0",
+        "source": "listings_cleaned.csv",
     },
     # Amenities
     {
@@ -258,7 +266,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "解析 amenities 列表后的元素数量",
         "example": "35",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "amenity_comfort_score",
@@ -307,7 +315,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": f"amenities 中出现 '{label.lower()}' → 1，否则 0",
         "example": "1",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     }
     for suffix, label in [
         ("wifi", "Wi-Fi"),
@@ -331,7 +339,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "description 文本长度，缺失按 0 计算",
         "example": "520",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "neighborhood_desc_length",
@@ -339,7 +347,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "neighborhood_overview 文本长度",
         "example": "180",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "host_about_length",
@@ -347,7 +355,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "host_about 文本长度",
         "example": "75",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     # Time features
     {
@@ -356,7 +364,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "2021-09-07 与 first_review 之间的天数",
         "example": "1800",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "days_since_last_review",
@@ -364,7 +372,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "2021-09-07 与 last_review 的天数（无评论记 9999）",
         "example": "45",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "recent_review_flag",
@@ -378,7 +386,7 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "name": "recent_review_score",
         "description": "近期评论活跃度得分",
         "feature_type": "衍生字段",
-        "logic": "(30 - clamp(days_since_last_review,0,30))/30 + 0.5*reviews_growth_ratio",
+        "logic": "exp(-days_since_last_review / 365)",
         "example": "0.8",
         "source": "派生自评论字段",
     },
@@ -389,15 +397,176 @@ FEATURE_METADATA: List[Dict[str, str]] = [
         "feature_type": "衍生字段",
         "logic": "根据 latitude/longitude 与市中心 (52.3676, 4.9041) 计算 haversine 距离",
         "example": "3.2",
-        "source": "listings_detailed.xlsx",
+        "source": "listings_cleaned.csv",
     },
     {
         "name": "is_central",
-        "description": "是否位于中心 4KM 内",
+        "description": "是否位于中心 5KM 内",
         "feature_type": "衍生字段",
-        "logic": "distance_to_center_km ≤ 4 → 1，否则 0",
+        "logic": "distance_to_center_km ≤ 5 → 1，否则 0",
         "example": "1",
         "source": "派生自 distance_to_center_km",
+    },
+    # Missing indicator variables
+    {
+        "name": "availability_eoy_is_missing",
+        "description": "availability_eoy 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 availability_eoy 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "estimated_occupancy_l365d_is_missing",
+        "description": "estimated_occupancy_l365d 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 estimated_occupancy_l365d 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_about_is_missing",
+        "description": "host_about 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 host_about 缺失 → 1，否则 0",
+        "example": "0",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_acceptance_rate_is_missing",
+        "description": "host_acceptance_rate 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 host_acceptance_rate 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_neighbourhood_is_missing",
+        "description": "host_neighbourhood 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 host_neighbourhood 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_response_rate_is_missing",
+        "description": "host_response_rate 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 host_response_rate 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_response_time_is_missing",
+        "description": "host_response_time 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 host_response_time 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "neighborhood_overview_is_missing",
+        "description": "neighborhood_overview 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 neighborhood_overview 缺失 → 1，否则 0",
+        "example": "0",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "neighbourhood_is_missing",
+        "description": "neighbourhood 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 neighbourhood 缺失 → 1，否则 0",
+        "example": "0",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "number_of_reviews_ly_is_missing",
+        "description": "number_of_reviews_ly 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 number_of_reviews_ly 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "source_is_missing",
+        "description": "source 字段是否缺失",
+        "feature_type": "缺失指示变量",
+        "logic": "原始数据中 source 缺失 → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    # Text embeddings
+] + [
+    {
+        "name": f"desc_embed_{i}",
+        "description": f"房源描述文本嵌入第{i}维",
+        "feature_type": "文本嵌入",
+        "logic": "使用 TF-IDF + SVD 对 description 字段进行降维，共20维",
+        "example": "0.023",
+        "source": "listings_cleaned.csv",
+    }
+    for i in range(20)
+] + [
+    {
+        "name": f"neighborhood_embed_{i}",
+        "description": f"社区介绍文本嵌入第{i}维",
+        "feature_type": "文本嵌入",
+        "logic": "使用 TF-IDF + SVD 对 neighborhood_overview 字段进行降维，共20维",
+        "example": "0.015",
+        "source": "listings_cleaned.csv",
+    }
+    for i in range(20)
+] + [
+    # Sentiment analysis features
+    {
+        "name": "desc_sentiment_compound",
+        "description": "房源描述情感得分",
+        "feature_type": "情感分析",
+        "logic": "使用 VADER 情感分析器分析 description 文本的复合情感得分（-1到1）",
+        "example": "0.65",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "neighborhood_sentiment_compound",
+        "description": "社区介绍情感得分",
+        "feature_type": "情感分析",
+        "logic": "使用 VADER 情感分析器分析 neighborhood_overview 文本的复合情感得分",
+        "example": "0.42",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "host_about_sentiment_compound",
+        "description": "房东介绍情感得分",
+        "feature_type": "情感分析",
+        "logic": "使用 VADER 情感分析器分析 host_about 文本的复合情感得分",
+        "example": "0.38",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "text_sentiment_score",
+        "description": "综合文本情感得分",
+        "feature_type": "情感分析",
+        "logic": "0.5*desc_sentiment + 0.3*neighborhood_sentiment + 0.2*host_about_sentiment",
+        "example": "0.52",
+        "source": "派生自文本情感分析",
+    },
+    # Additional features
+    {
+        "name": "amenity_has_long_term_stays_allowed",
+        "description": "是否允许长期住宿",
+        "feature_type": "衍生字段",
+        "logic": "amenities 中出现 'long term stays allowed' → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
+    },
+    {
+        "name": "amenity_has_pets_allowed",
+        "description": "是否允许宠物",
+        "feature_type": "衍生字段",
+        "logic": "amenities 中出现 'pets allowed' → 1，否则 0",
+        "example": "1",
+        "source": "listings_cleaned.csv",
     },
 ]
 

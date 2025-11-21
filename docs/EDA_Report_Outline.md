@@ -139,9 +139,9 @@
 
 **总体统计 / Overall Statistics**:
 
-- **总数据集数 / Total Datasets**: 4 个（已加载）+ 1 个（待探索）
-- **总记录数 / Total Records**: **434,533** 条
-- **总数据大小 / Total Size**: **9.97 MB**
+- **总数据集数 / Total Datasets**: 5 个（已分析）
+- **总记录数 / Total Records**: **434,533** 条（不含listings_detailed重复记录）
+- **总数据大小 / Total Size**: **约 25 MB**（包含listings_detailed.xlsx）
 - **数据时间跨度 / Time Span**: **2009-03-30 至 2021-09-07**（12.4 年）
 
 **各数据集规模 / Dataset Scale**:
@@ -152,7 +152,7 @@
 | **reviews.csv**            | 397,185          | 2                       | 7.35 MB     | ✅ 已加载         |
 | **calendar_summary.csv**   | 21,210           | 3                       | 0.29 MB     | ✅ 已加载         |
 | **neighbourhoods.csv**     | 22               | 2                       | <0.01 MB    | ✅ 已加载         |
-| **listings_detailed.xlsx** | ?                | ?                       | ~15 MB      | ⚠️ 待探索       |
+| **listings_detailed.xlsx** | 16,116           | 74                      | ~15 MB      | ✅ 已分析         |
 
 **数据规模可视化 / Data Scale Visualization**:
 
@@ -275,7 +275,7 @@ graph TB
     Reviews -->|listing_id<br/>一对多| Listings
     Calendar -->|listing_id<br/>一对一/多| Listings
     Neighbourhoods -->|neighbourhood<br/>多对一| Listings
-    DetailedListings -.->|可能是扩展版本<br/>待验证| Listings
+    DetailedListings -.->|扩展版本<br/>| Listings
   
     %% Styling
     classDef core fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
@@ -372,20 +372,46 @@ graph TB
 - 地理聚合分析（按街区统计房源数、平均价格等）
 - 地理可视化（如果有 GeoJSON 数据可以绘制街区边界）
 
-#### 3.2.4 listings_detailed.xlsx → listings.csv (待确认 / To Be Confirmed)
+#### 3.2.4 listings_detailed.xlsx → listings.csv (一对一扩展关系 / One-to-One Extended Relationship)
 
 **关系特征 / Relationship Characteristics**:
 
-- **关系类型**: 待确认（可能是扩展版本）
-- **关联方式**: 待验证
-- **数据状态**: ⚠️ 待探索
+- **关系类型**: ✅ **一对一扩展关系** - listings_detailed.xlsx 是 listings.csv 的详细扩展版本
+- **关联方式**: 通过 `id` 字段关联（100%匹配）
+- **数据状态**: ✅ **已验证**
 
-**待验证内容 / To Be Verified**:
+**关系验证结果 / Relationship Verification Results**:
 
-- 字段结构对比
-- 数据记录数对比
-- 额外字段识别
-- 数据价值评估
+- ✅ **记录数完全一致**: 两个文件都包含 16,116 条记录
+- ✅ **ID完全匹配**: 所有 16,116 个ID在两个文件中都存在，100%重叠
+- ✅ **一对一关系**: 每个ID在两个文件中都有唯一对应记录
+
+**字段关系 / Field Relationship**:
+
+- **listings.csv**: 18个字段（核心字段）
+- **listings_detailed.xlsx**: 74个字段（扩展版本）
+- **共同字段**: 17个（id, name, host_id, host_name, neighbourhood, latitude, longitude, room_type, price等）
+- **CSV独有字段**: 1个（`neighbourhood_group`，但该字段在CSV中全为空，0%有值）
+- **Detailed独有字段**: 57个（包含host详细信息、review scores、amenities等）
+
+**数据格式差异 / Data Format Differences**:
+
+1. **Price字段格式差异**:
+
+   - CSV格式: 数字类型（如: 59）
+   - Detailed格式: 字符串类型，带货币符号（如: "$59.00"）
+   - 需要转换才能比较
+2. **Neighbourhood字段内容差异**:
+
+   - CSV格式: 具体街区名称（如: "Oostelijk Havengebied - Indische Buurt"）
+   - Detailed格式: 完整地址（如: "Amsterdam, North Holland, Netherlands"）
+   - CSV更具体，Detailed更完整
+
+**使用建议 / Usage Recommendations**:
+
+- **基础分析**: 使用 `listings.csv`（文件更小，加载更快，包含核心字段）
+- **深入分析/建模**: 使用 `listings_detailed.xlsx`（字段更全，包含host信息、review scores、amenities等）
+- **数据合并**: 可以通过ID字段安全合并，注意price和neighbourhood字段的格式差异
 
 **数据集关系可视化 / Dataset Relationship Visualization**:
 
@@ -410,19 +436,26 @@ graph TB
    - 价格 + 评论 + 可用性 = 完整的房源表现画像
    - 可以识别高价值房源（高价格、高评论、高入住率）
    - 可以识别问题房源（低价格、低评论、低入住率）
+   - **扩展分析**: listings_detailed.xlsx 提供host行为、评分细分等更多维度
 2. **时间序列分析 / Time Series Analysis** ✅
 
    - 评论趋势分析（基于 reviews.csv，2009-2021年）
    - 预订趋势分析（基于 calendar_summary.csv）
    - 季节性模式识别（旅游旺季/淡季）
    - COVID-19 影响分析（2020-2021年）
-3. **地理空间分析 / Geospatial Analysis** ✅
+3. **详细字段整合分析 / Detailed Fields Integration Analysis** ✅
+
+   - **Host行为分析**: host_response_time, host_response_rate, host_acceptance_rate（来自listings_detailed.xlsx）
+   - **评分细分分析**: review_scores_rating, review_scores_accuracy等（来自listings_detailed.xlsx）
+   - **房源描述分析**: description, neighborhood_overview（来自listings_detailed.xlsx）
+   - **设施分析**: amenities（JSON格式，来自listings_detailed.xlsx）
+4. **地理空间分析 / Geospatial Analysis** ✅
 
    - 街区 + 经纬度 = 完整的地理信息
    - 可以分析地理位置对价格的影响
    - 可以分析地理位置对受欢迎度的影响
    - 可以创建地理分布地图
-4. **房东行为分析 / Host Behavior Analysis** ✅
+5. **房东行为分析 / Host Behavior Analysis** ✅
 
    - 多房源房东 vs 单房源房东
    - 房东房源数分布
@@ -441,11 +474,12 @@ graph TB
 
 通过验证分析，所有数据集之间的关系清晰且数据一致性高：
 
-1. **核心数据集（listings.csv）质量优秀**
+1. **核心数据集关系明确且质量优秀**
 
-   - 16,116 个房源记录完整
-   - 核心字段完整度 100%
-   - 可作为数据整合的中心节点
+   - **listings.csv**: 16,116 个房源记录完整，18个核心字段，可作为基础数据源
+   - **listings_detailed.xlsx**: 与CSV一对一关系，ID完全匹配（100%），包含74个字段（17个共同字段 + 57个扩展字段）
+   - **关系类型**: listings_detailed.xlsx 是 listings.csv 的详细扩展版本
+   - **数据一致性**: 记录数完全一致，ID完全匹配，可作为数据整合的中心节点
 2. **时间序列数据（reviews.csv）丰富**
 
    - 397,185 条评论记录
@@ -466,9 +500,12 @@ graph TB
 **数据整合建议 / Data Integration Recommendations**:
 
 - ✅ **建议进行数据整合**: 所有数据集可以安全地通过 `listing_id` 和 `neighbourhood` 进行关联
+- ✅ **listings.csv 与 listings_detailed.xlsx**: 可通过 `id` 字段安全合并，注意price和neighbourhood字段格式差异
 - ✅ **建议使用时间序列分析**: reviews.csv 提供丰富的时间维度信息
 - ✅ **建议进行地理空间分析**: 完整的地理坐标和街区信息支持地理分析
+- ✅ **建议使用listings_detailed.xlsx进行深入分析**: 包含host行为、评分细分、amenities等57个扩展字段
 - ⚠️ **注意数据采集时间**: 数据采集时间为 2021年9月，部分房源可能已下架或变更
+- ⚠️ **注意字段格式差异**: price字段（CSV为数字，detailed为字符串）和neighbourhood字段（CSV更具体，detailed更完整）
 
 **数据整合后的分析潜力 / Integrated Analysis Potential**:
 
@@ -1091,28 +1128,42 @@ graph TB
 #### 5.5.1 数据集概览 / Dataset Overview
 
 - **规模 / Scale**: 16,116 行 × 74 列
-- **用途 / Purpose**: listings.csv 的扩展版本，包含更多详细字段
+- **用途 / Purpose**: listings.csv 的详细扩展版本，包含更多详细字段
 - **数据质量 / Data Quality**: ✅ **良好**
   - 记录数与 listings.csv 完全一致（16,116）
+  - ID完全匹配（100%重叠）
   - 包含 57 个额外字段
 
 **数据集基本信息 / Basic Dataset Information**:
 
-| 指标 / Metric             | 数值 / Value             |
-| ------------------------- | ------------------------ |
-| 总记录数 / Total Records  | 16,116                   |
-| 字段数 / Columns          | 74                       |
-| listings.csv 字段数       | 17                       |
-| 额外字段数 / Extra Fields | 57                       |
-| 记录匹配度                | 100%（所有 id 完全匹配） |
+| 指标 / Metric              | 数值 / Value             |
+| -------------------------- | ------------------------ |
+| 总记录数 / Total Records   | 16,116                   |
+| 字段数 / Columns           | 74                       |
+| listings.csv 字段数        | 18（其中1个全为空）      |
+| 共同字段数 / Common Fields | 17                       |
+| 额外字段数 / Extra Fields  | 57                       |
+| 记录匹配度 / Record Match  | 100%（所有 id 完全匹配） |
+| 关系类型 / Relationship    | 一对一扩展关系           |
+
+**与 listings.csv 的关系 / Relationship with listings.csv**:
+
+- ✅ **记录关系**: 一对一关系，所有16,116个ID完全匹配
+- ✅ **字段关系**: listings.csv 的17个有效字段都在 detailed 中存在
+- ✅ **扩展内容**: detailed 包含57个额外字段，涵盖host信息、review scores、amenities等
+- ⚠️ **格式差异**: price字段格式不同（CSV为数字，detailed为字符串），neighbourhood字段内容不同（CSV更具体，detailed更完整）
 
 #### 5.5.2 字段对比分析 / Field Comparison Analysis
 
 **字段对比统计 / Field Comparison Statistics**:
 
-- **共同字段**: 17 个（与 listings.csv 相同）
-- **listings.csv 独有字段**: 0 个
+- **共同字段**: 17 个（与 listings.csv 的有效字段相同）
+- **listings.csv 独有字段**: 1 个（`neighbourhood_group`，但该字段在CSV中全为空，0%有值）
 - **listings_detailed 独有字段**: 57 个
+
+**共同字段列表 / Common Fields List** (17个):
+
+id, name, host_id, host_name, neighbourhood, latitude, longitude, room_type, price, minimum_nights, number_of_reviews, last_review, reviews_per_month, calculated_host_listings_count, availability_365, license, number_of_reviews_ltm
 
 **额外字段类别 / Extra Field Categories**:
 
@@ -1157,9 +1208,27 @@ graph TB
 
 **使用建议 / Usage Recommendations**:
 
-- 如果研究方向涉及房东行为或评分细分，建议使用此数据集
-- 如果研究方向仅涉及基础特征，listings.csv 已足够
-- 注意高缺失率字段的处理
+**何时使用 listings.csv**:
+
+- ✅ 基础分析和快速探索
+- ✅ 文件更小（2.33 MB），加载更快
+- ✅ 包含核心字段（ID、名称、位置、价格、房型等）
+- ✅ 适合初步数据理解和可视化
+
+**何时使用 listings_detailed.xlsx**:
+
+- ✅ 深入分析和建模
+- ✅ 需要host行为信息（host_response_time, host_response_rate等）
+- ✅ 需要评分细分（review_scores_rating, review_scores_accuracy等）
+- ✅ 需要房源描述和设施信息（description, amenities）
+- ✅ 需要更多时间相关字段（first_review, calendar信息等）
+
+**数据合并建议**:
+
+- ✅ 可以通过ID字段安全合并两个文件
+- ⚠️ 注意price字段格式差异（CSV为数字，detailed为字符串）
+- ⚠️ 注意neighbourhood字段内容差异（CSV更具体，detailed更完整）
+- ⚠️ 注意高缺失率字段的处理（host_response_time等缺失率>67%）
 
 **字段对比可视化 / Field Comparison Visualization**:
 

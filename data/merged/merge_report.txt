@@ -1,0 +1,43 @@
+================================================================================
+Data Merge Report / 数据合并报告
+================================================================================
+
+合并时间 / Merge Time: 2025-11-21 12:13:30
+
+数据源信息 / Data Source Information:
+  - 2021年数据源: listings_detailed.xlsx
+    - 记录数: 16,116
+    - 字段数: 80
+  - 2025年数据源: data/2025/listings_detailed.csv
+    - 记录数: 10,480
+    - 字段数: 80
+
+字段对比 / Column Comparison:
+  - 共同字段数: 74
+  - 仅在2021年的字段数: 0
+  - 仅在2025年的字段数: 5
+  - 合并后总字段数: 80
+
+仅在2025年的字段 / Columns Only in 2025:
+  - availability_eoy
+  - estimated_occupancy_l365d
+  - estimated_revenue_l365d
+  - number_of_reviews_ly
+  - source
+
+合并结果 / Merge Results:
+  - 总记录数: 26,596
+  - 总字段数: 80
+  - 2021年记录数: 16,116
+  - 2025年记录数: 10,480
+
+ID统计 / ID Statistics:
+  - 总记录数: 26,596
+  - 唯一ID数: 23,029
+  - 重复ID数: 3,567
+
+输出文件 / Output Files:
+  - Excel: /Users/cba/Desktop/uva/course/data science/project/data/merged/listings_merged_2021_2025.xlsx
+  - CSV: /Users/cba/Desktop/uva/course/data science/project/data/merged/listings_merged_2021_2025.csv
+
+================================================================================

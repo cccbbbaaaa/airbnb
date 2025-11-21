@@ -1,8 +1,9 @@
 """
-评分预测特征工程脚本 - 整合版本 / Rating Prediction Feature Engineering Script - Merged Version
+评分预测特征工程脚本 - 适用于已合并+已清洗的数据集
+Rating Prediction Feature Engineering Script - For Merged and Cleaned Dataset
 
-整合 listings_detailed 和 listings_detailed_2 两个数据文件，然后进行特征工程
-Merges listings_detailed and listings_detailed_2, then performs feature engineering
+从清洗后的数据构建训练特征
+Build training features from cleaned data
 """
 
 import json
@@ -34,11 +35,10 @@ except (ImportError, ModuleNotFoundError) as e:
 # 添加 EDA 目录到路径 / Add EDA directory to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "EDA"))
 
-from utils import setup_plotting, get_project_paths
+from utils import get_project_paths
 try:
     from feature_registry import write_feature_registry, register_feature
 except ImportError:
-    # 如果 feature_registry 不可用，定义空函数 / If feature_registry not available, define empty functions
     def write_feature_registry():
         return None
     def register_feature(*args, **kwargs):
@@ -46,9 +46,6 @@ except ImportError:
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
-
-# 启用绘图风格（如后续需要可视化）/ Setup plotting style (optional)
-setup_plotting()
 
 # 常量 / Constants
 REFERENCE_DATE = pd.Timestamp("2021-09-07")
@@ -75,18 +72,13 @@ LUXURY_AMENITIES = {
 }
 
 
-def load_cleaned_listings_data() -> pd.DataFrame:
+def load_cleaned_data() -> pd.DataFrame:
     """
     从清洗后的数据文件加载数据
     Load data from cleaned data file
     """
-    paths = get_project_paths()
-    if len(paths) == 4:
-        project_root, data_dir, _, _ = paths
-    else:
-        project_root, data_dir, _ = paths
+    project_root, data_dir, _, _ = get_project_paths()
     
-    # 加载清洗后的数据
     cleaned_data_path = project_root / "data" / "cleaned" / "listings_cleaned.csv"
     
     if not cleaned_data_path.exists():
@@ -108,18 +100,6 @@ def load_cleaned_listings_data() -> pd.DataFrame:
         print(f"\n  年份分布 / Year Distribution:")
         for year, count in year_dist.items():
             print(f"    {year}年: {count:,} 条记录")
-    
-    # 检查缺失值（应该已经全部清洗）
-    total_missing = df.isna().sum().sum()
-    if total_missing > 0:
-        print(f"\n  ⚠️  警告: 数据中仍有 {total_missing} 个缺失值")
-    else:
-        print(f"\n  ✅ 数据已完全清洗，无缺失值")
-    
-    # 检查缺失指示变量
-    indicator_cols = [col for col in df.columns if col.endswith('_is_missing')]
-    if indicator_cols:
-        print(f"  ✅ 发现 {len(indicator_cols)} 个缺失指示变量")
     
     return df
 
@@ -153,7 +133,6 @@ def parse_percentage(series: pd.Series) -> pd.Series:
             return float(x) / 100 if float(x) > 1 else float(x)
         except (ValueError, TypeError):
             return 0.0
-
     return series.apply(_convert)
 
 
@@ -268,15 +247,15 @@ def generate_text_embeddings(
         return []
 
 
-def engineer_rating_features_merged(save_processed: bool = True) -> pd.DataFrame:
+def build_features() -> pd.DataFrame:
     """
-    从清洗后的数据构建评分预测特征
-    Build rating prediction features from cleaned data
+    从清洗后的数据构建训练特征
+    Build training features from cleaned data
     """
     print("\n开始特征工程 / Starting Feature Engineering...")
     
     # 加载清洗后的数据
-    df = load_cleaned_listings_data()
+    df = load_cleaned_data()
     
     # 基础清洗
     df = clean_price_column(df)
@@ -300,7 +279,7 @@ def engineer_rating_features_merged(save_processed: bool = True) -> pd.DataFrame
     
     # 处理 license
     if "license" in df.columns:
-        df["has_license_info"] = df["license"].notna().astype(int)
+        df["has_license_info"] = (df["license"].notna() & (df["license"] != "Unknown")).astype(int)
     else:
         df["has_license_info"] = 0
     
@@ -500,7 +479,7 @@ def engineer_rating_features_merged(save_processed: bool = True) -> pd.DataFrame
     
     # 选择用于建模的字段
     feature_columns = [
-        "review_scores_rating",
+        "review_scores_rating",  # 目标变量
         "price_clean", "log_price", "price_per_person",
         "occupancy_rate", "availability_ratio",
         "reviews_per_month", "log_reviews_per_month",
@@ -519,11 +498,13 @@ def engineer_rating_features_merged(save_processed: bool = True) -> pd.DataFrame
         "host_verifications_count", "host_has_gov_id",
         "desc_sentiment_compound", "neighborhood_sentiment_compound", "host_about_sentiment_compound",
         "text_sentiment_score",
-        "data_year",  # 保留年份标识
     ]
     
     # 添加缺失指示变量作为特征
-    indicator_cols = [col for col in df.columns if col.endswith('_is_missing')]
+    indicator_cols = [
+        col for col in df.columns
+        if col.endswith('_is_missing') and col != 'license_is_missing'
+    ]
     feature_columns.extend(indicator_cols)
     
     # 添加关键设施特征列
@@ -544,36 +525,35 @@ def engineer_rating_features_merged(save_processed: bool = True) -> pd.DataFrame
     
     processed_df = df[final_feature_columns].copy()
     
-    # 保存处理后的数据
-    if save_processed:
-        paths = get_project_paths()
-        if len(paths) == 4:
-            project_root, data_dir, _, _ = paths
-        else:
-            project_root, data_dir, _ = paths
-        processed_dir = data_dir / "processed"
-        processed_dir.mkdir(exist_ok=True)
-        parquet_path = processed_dir / "rating_features_merged.parquet"
-        csv_path = processed_dir / "rating_features_merged.csv"
-        try:
-            processed_df.to_parquet(parquet_path, index=False)
-            print(f"  [OK] 处理后的特征已保存到 / Processed features saved to: {parquet_path}")
-        except Exception as exc:
-            processed_df.to_csv(csv_path, index=False)
-            print(
-                f"  [WARNING] 保存 Parquet 失败（{exc}），已自动保存为 CSV: {csv_path}"
-            )
-    
     return processed_df
 
 
 def main():
     """运行特征工程 / Run feature engineering."""
     print("=" * 80)
-    print("构建评分预测特征 (整合版本) / Building Rating Prediction Features (Merged Version)")
+    print("构建训练特征 / Building Training Features")
     print("=" * 80)
-    processed_df = engineer_rating_features_merged(save_processed=True)
-    print(f"\n数据规模 / Dataset size: {len(processed_df)} 行 × {processed_df.shape[1]} 列")
+    
+    # 构建特征
+    train_data = build_features()
+    
+    # 保存训练数据
+    project_root, data_dir, _, _ = get_project_paths()
+    processed_dir = data_dir / "processed"
+    processed_dir.mkdir(exist_ok=True)
+    
+    train_data_path = processed_dir / "train_data.csv"
+    train_data.to_csv(train_data_path, index=False, encoding='utf-8-sig')
+    print(f"\n  [OK] 训练数据已保存到 / Training data saved to: {train_data_path}")
+    print(f"  数据规模 / Dataset size: {len(train_data):,} 行 × {train_data.shape[1]} 列")
+    print(f"  特征数量 / Feature count: {train_data.shape[1]} 个")
+    
+    # 显示特征统计
+    print(f"\n  特征统计 / Feature Statistics:")
+    print(f"    - 目标变量: review_scores_rating")
+    print(f"    - 数值特征: {len([c for c in train_data.columns if pd.api.types.is_numeric_dtype(train_data[c])])} 个")
+    print(f"    - 缺失指示变量: {len([c for c in train_data.columns if c.endswith('_is_missing')])} 个")
+    
     print("=" * 80)
 
 

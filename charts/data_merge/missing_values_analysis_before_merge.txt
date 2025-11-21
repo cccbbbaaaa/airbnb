@@ -1,0 +1,111 @@
+================================================================================
+Missing Values Analysis Report - Before Merging
+合并前缺失值分析报告
+================================================================================
+
+1. 2021年数据缺失值概况 / 2021 Data Missing Values Overview:
+  - 总记录数: 16,116
+  - 总字段数: 74
+  - 完全缺失的字段（100%）: 3
+  - 完全完整的字段（0%）: 31
+  - 高缺失率字段（>50%）: 7
+  - 中等缺失率字段（10-50%）: 14
+  - 低缺失率字段（<10%）: 53
+  - 平均缺失率: 11.80%
+
+2. 2025年数据缺失值概况 / 2025 Data Missing Values Overview:
+  - 总记录数: 10,480
+  - 总字段数: 79
+  - 完全缺失的字段（100%）: 2
+  - 完全完整的字段（0%）: 36
+  - 高缺失率字段（>50%）: 5
+  - 中等缺失率字段（10-50%）: 19
+  - 低缺失率字段（<10%）: 55
+  - 平均缺失率: 10.39%
+
+3. 字段对比 / Column Comparison:
+  - 共同字段数: 74
+  - 仅在2021年的字段数: 0
+  - 仅在2025年的字段数: 5
+
+仅在2025年的字段 / Columns Only in 2025:
+  - availability_eoy
+  - estimated_occupancy_l365d
+  - estimated_revenue_l365d
+  - number_of_reviews_ly
+  - source
+
+4. 共同字段缺失率差异统计 / Common Fields Missing Rate Difference:
+  - 平均缺失率差异: -1.30%
+  - 平均绝对差异: 6.07%
+  - 最大差异: 70.60%
+  - 差异>5%的字段数: 11
+  - 差异>10%的字段数: 11
+
+5. 2021年数据 - 缺失率最高的20个字段 / Top 20 Fields with Highest Missing Rate (2021):
+  neighbourhood_group_cleansed             | 100.00% (16,116/16,116)
+  calendar_updated                         | 100.00% (16,116/16,116)
+  bathrooms                                | 100.00% (16,116/16,116)
+  license                                  |  71.74% (11,561/16,116)
+  host_response_rate                       |  68.75% (11,080/16,116)
+  host_response_time                       |  68.75% (11,080/16,116)
+  host_acceptance_rate                     |  67.91% (10,945/16,116)
+  host_about                               |  43.78% (7,056/16,116)
+  host_neighbourhood                       |  35.45% (5,713/16,116)
+  neighborhood_overview                    |  35.44% (5,711/16,116)
+  neighbourhood                            |  35.44% (5,711/16,116)
+  review_scores_location                   |  14.33% (2,309/16,116)
+  review_scores_value                      |  14.33% (2,309/16,116)
+  review_scores_checkin                    |  14.33% (2,309/16,116)
+  review_scores_communication              |  14.30% (2,304/16,116)
+  review_scores_accuracy                   |  14.28% (2,301/16,116)
+  review_scores_cleanliness                |  14.27% (2,300/16,116)
+  reviews_per_month                        |  12.95% (2,087/16,116)
+  first_review                             |  12.95% (2,087/16,116)
+  last_review                              |  12.95% (2,087/16,116)
+
+6. 2025年数据 - 缺失率最高的20个字段 / Top 20 Fields with Highest Missing Rate (2025):
+  calendar_updated                         | 100.00% (10,480/10,480)
+  neighbourhood_group_cleansed             | 100.00% (10,480/10,480)
+  host_neighbourhood                       |  73.38% (7,690/10,480)
+  neighborhood_overview                    |  50.46% (5,288/10,480)
+  neighbourhood                            |  50.46% (5,288/10,480)
+  host_about                               |  47.42% (4,970/10,480)
+  price                                    |  43.95% (4,606/10,480)
+  estimated_revenue_l365d                  |  43.95% (4,606/10,480)
+  beds                                     |  43.66% (4,576/10,480)
+  bathrooms                                |  43.40% (4,548/10,480)
+  host_response_rate                       |  36.23% (3,797/10,480)
+  host_response_time                       |  36.23% (3,797/10,480)
+  host_acceptance_rate                     |  23.19% (2,430/10,480)
+  host_location                            |  11.76% (1,232/10,480)
+  review_scores_cleanliness                |  10.48% (1,098/10,480)
+  last_review                              |  10.47% (1,097/10,480)
+  review_scores_location                   |  10.47% (1,097/10,480)
+  review_scores_rating                     |  10.47% (1,097/10,480)
+  review_scores_checkin                    |  10.47% (1,097/10,480)
+  review_scores_communication              |  10.47% (1,097/10,480)
+
+7. 差异最大的20个字段 / Top 20 Fields with Largest Differences:
+  license                                  | 2021:  71.74% | 2025:   1.14% | Diff:  -70.60%
+  bathrooms                                | 2021: 100.00% | 2025:  43.40% | Diff:  -56.60%
+  host_acceptance_rate                     | 2021:  67.91% | 2025:  23.19% | Diff:  -44.73%
+  price                                    | 2021:   0.00% | 2025:  43.95% | Diff:  +43.95%
+  beds                                     | 2021:   0.60% | 2025:  43.66% | Diff:  +43.06%
+  host_neighbourhood                       | 2021:  35.45% | 2025:  73.38% | Diff:  +37.93%
+  host_response_rate                       | 2021:  68.75% | 2025:  36.23% | Diff:  -32.52%
+  host_response_time                       | 2021:  68.75% | 2025:  36.23% | Diff:  -32.52%
+  neighborhood_overview                    | 2021:  35.44% | 2025:  50.46% | Diff:  +15.02%
+  neighbourhood                            | 2021:  35.44% | 2025:  50.46% | Diff:  +15.02%
+  host_location                            | 2021:   0.22% | 2025:  11.76% | Diff:  +11.54%
+  review_scores_checkin                    | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_location                   | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_value                      | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_communication              | 2021:  14.30% | 2025:  10.47% | Diff:   -3.83%
+  review_scores_accuracy                   | 2021:  14.28% | 2025:  10.47% | Diff:   -3.81%
+  review_scores_cleanliness                | 2021:  14.27% | 2025:  10.48% | Diff:   -3.79%
+  host_about                               | 2021:  43.78% | 2025:  47.42% | Diff:   +3.64%
+  has_availability                         | 2021:   0.00% | 2025:   3.27% | Diff:   +3.27%
+  bedrooms                                 | 2021:   5.57% | 2025:   2.92% | Diff:   -2.65%
+
+================================================================================

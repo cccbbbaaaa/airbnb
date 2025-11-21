@@ -1,0 +1,59 @@
+================================================================================
+Review Scores Rating Distribution Comparison Statistics
+review_scores_rating 分布比较统计信息
+================================================================================
+
+2021 Data (listings_detailed.xlsx):
+  Total Records: 16,116
+  Valid Ratings: 14,029 (87.1%)
+  Mean: 4.69
+  Median: 4.86
+  Std: 0.67
+  Min: 0.00
+  Max: 5.00
+
+2025 Data (listings_detailed_2.xlsx):
+  Total Records: 10,480
+  Valid Ratings: 9,383 (89.5%)
+  Mean: 4.84
+  Median: 4.92
+  Std: 0.26
+  Min: 1.00
+  Max: 5.00
+
+Change Comparison:
+  Mean Change: 0.15 (+3.2%)
+  Median Change: 0.06 (+1.2%)
+  Std Change: -0.41 (-61.4%)
+
+Quantile Analysis:
+  Top 30% Threshold (70th percentile):
+    2021: 5.00
+    2025: 5.00
+    Change: 0.00 (+0.1%)
+  Top 25% Threshold (75th percentile):
+    2021: 5.00
+    2025: 5.00
+    Change: 0.00 (+0.0%)
+
+4-5 Rating Range Cumulative Distribution (0.2 intervals):
+  4.0-4.2:
+    2021 - Interval: 3.44%, Cumulative: 96.73%
+    2025 - Interval: 1.62%, Cumulative: 99.14%
+    Cumulative Change: 2.41%
+  4.2-4.4:
+    2021 - Interval: 3.50%, Cumulative: 93.29%
+    2025 - Interval: 1.68%, Cumulative: 97.52%
+    Cumulative Change: 4.22%
+  4.4-4.6:
+    2021 - Interval: 9.20%, Cumulative: 89.79%
+    2025 - Interval: 5.88%, Cumulative: 95.83%
+    Cumulative Change: 6.04%
+  4.6-4.8:
+    2021 - Interval: 20.39%, Cumulative: 80.59%
+    2025 - Interval: 15.25%, Cumulative: 89.95%
+    Cumulative Change: 9.36%
+  4.8-5.0:
+    2021 - Interval: 30.20%, Cumulative: 60.20%
+    2025 - Interval: 35.94%, Cumulative: 74.70%
+    Cumulative Change: 14.50%

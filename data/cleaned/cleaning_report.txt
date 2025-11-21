@@ -1,0 +1,29 @@
+================================================================================
+Data Cleaning Report / 数据清洗报告
+================================================================================
+
+清洗时间 / Cleaning Time: 2025-11-21 12:28:21
+
+数据概览 / Data Overview:
+  - 原始数据: 26,596 行 × 80 列
+  - 清洗后数据: 26,596 行 × 88 列
+  - 删除行数: 0
+  - 删除列数: -8
+
+处理统计 / Processing Statistics:
+  - 无需处理 / No Action: 30
+  - 中位数/均值填充 / Median/Mean Fill: 18
+  - 众数填充 / Mode Fill: 14
+  - 创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill: 6
+  - 删除字段 / Drop Column: 4
+  - 创建缺失指示变量 + 未知类别填充 / Missing Indicator + Unknown Fill: 3
+  - 创建缺失指示变量 + 中位数填充 / Missing Indicator + Median Fill: 3
+  - 创建未知类别 / Create Unknown Category: 2
+
+剩余缺失值 / Remaining Missing Values: 无 / None
+
+输出文件 / Output Files:
+  - 清洗后的数据: /Users/cba/Desktop/uva/course/data science/project/data/cleaned/listings_cleaned.csv
+  - 处理日志: /Users/cba/Desktop/uva/course/data science/project/data/cleaned/cleaning_log.csv
+
+================================================================================

@@ -1,0 +1,46 @@
+================================================================================
+Missing Values Comparison Report
+缺失值情况对比报告
+================================================================================
+
+Overall Statistics / 整体统计:
+  Total Common Fields: 74
+  Fields Only in 2021: 0
+  Fields Only in 2025: 5
+
+Difference Statistics / 差异统计:
+  Average Difference: -1.30%
+  Average Absolute Difference: 6.07%
+  Max Absolute Difference: 70.60%
+  Fields with Difference > 5%: 11
+  Fields with Difference > 10%: 11
+
+Missing Pattern Categories / 缺失模式分类:
+  Completely Missing in 2021 (100%): 3
+  Completely Missing in 2025 (100%): 2
+  Completely Complete in 2021 (0%): 31
+  Completely Complete in 2025 (0%): 32
+  High Missing Rate in 2021 (>50%): 7
+  High Missing Rate in 2025 (>50%): 5
+
+Top 20 Fields with Largest Differences / 差异最大的20个字段:
+  license                                  | 2021:  71.74% | 2025:   1.14% | Diff:  -70.60%
+  bathrooms                                | 2021: 100.00% | 2025:  43.40% | Diff:  -56.60%
+  host_acceptance_rate                     | 2021:  67.91% | 2025:  23.19% | Diff:  -44.73%
+  price                                    | 2021:   0.00% | 2025:  43.95% | Diff:  +43.95%
+  beds                                     | 2021:   0.60% | 2025:  43.66% | Diff:  +43.06%
+  host_neighbourhood                       | 2021:  35.45% | 2025:  73.38% | Diff:  +37.93%
+  host_response_rate                       | 2021:  68.75% | 2025:  36.23% | Diff:  -32.52%
+  host_response_time                       | 2021:  68.75% | 2025:  36.23% | Diff:  -32.52%
+  neighborhood_overview                    | 2021:  35.44% | 2025:  50.46% | Diff:  +15.02%
+  neighbourhood                            | 2021:  35.44% | 2025:  50.46% | Diff:  +15.02%
+  host_location                            | 2021:   0.22% | 2025:  11.76% | Diff:  +11.54%
+  review_scores_checkin                    | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_location                   | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_value                      | 2021:  14.33% | 2025:  10.47% | Diff:   -3.86%
+  review_scores_communication              | 2021:  14.30% | 2025:  10.47% | Diff:   -3.83%
+  review_scores_accuracy                   | 2021:  14.28% | 2025:  10.47% | Diff:   -3.81%
+  review_scores_cleanliness                | 2021:  14.27% | 2025:  10.48% | Diff:   -3.79%
+  host_about                               | 2021:  43.78% | 2025:  47.43% | Diff:   +3.65%
+  has_availability                         | 2021:   0.00% | 2025:   3.27% | Diff:   +3.27%
+  bedrooms                                 | 2021:   5.57% | 2025:   2.92% | Diff:   -2.65%

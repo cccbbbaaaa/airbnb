@@ -1,0 +1,18 @@
+CatBoost Best Parameters
+==================================================
+
+Grid Search Results:
+  depth: 6
+  iterations: 400
+  l2_leaf_reg: 5
+  learning_rate: 0.03
+
+Tuning Time: 514.70 seconds (8.58 minutes)
+CV Score: 0.8872
+Test AUC: 0.8876
+
+Parameter Grid:
+  iterations: [400, 600, 800]
+  depth: [4, 6, 8]
+  learning_rate: [0.01, 0.03, 0.05]
+  l2_leaf_reg: [1, 3, 5]
