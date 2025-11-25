@@ -1,0 +1,81 @@
+﻿column,missing_count,missing_pct,non_missing_count,completeness_pct,dtype,is_numeric,is_datetime,is_categorical,unique_count,unique_ratio,priority,recommended_method,method_explanation
+calendar_updated,26596,100.0,0,0.0,float64,True,False,False,0,0.0,低 / Low (建议删除),删除字段 / Drop Column (完全缺失),字段完全缺失，建议删除
+neighbourhood_group_cleansed,26596,100.0,0,0.0,float64,True,False,False,0,0.0,低 / Low (建议删除),删除字段 / Drop Column (完全缺失),字段完全缺失，建议删除
+estimated_revenue_l365d,20722,77.91397202586855,5874,22.086027974131454,float64,True,False,False,2636,0.44875723527408923,中 / Medium,删除字段或创建缺失指示变量 / Drop Column or Create Missing Indicator,缺失率很高，可删除或创建二值指示变量
+bathrooms,20664,77.69589411941645,5932,22.30410588058355,float64,True,False,False,15,0.0025286581254214432,中 / Medium,删除字段或创建缺失指示变量 / Drop Column or Create Missing Indicator,缺失率很高，可删除或创建二值指示变量
+source,16116,60.59557828244849,10480,39.40442171755151,object,False,False,True,2,0.00019083969465648855,中 / Medium,创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill,创建二值变量标识缺失，并用众数填充
+availability_eoy,16116,60.59557828244849,10480,39.40442171755151,float64,True,False,False,113,0.010782442748091602,中 / Medium,创建缺失指示变量 + 中位数/均值填充 / Missing Indicator + Median/Mean Fill,创建二值变量标识缺失，并用中位数/均值填充
+estimated_occupancy_l365d,16116,60.59557828244849,10480,39.40442171755151,float64,True,False,False,96,0.00916030534351145,中 / Medium,创建缺失指示变量 + 中位数/均值填充 / Missing Indicator + Median/Mean Fill,创建二值变量标识缺失，并用中位数/均值填充
+number_of_reviews_ly,16116,60.59557828244849,10480,39.40442171755151,float64,True,False,False,143,0.013645038167938932,中 / Medium,创建缺失指示变量 + 中位数/均值填充 / Missing Indicator + Median/Mean Fill,创建二值变量标识缺失，并用中位数/均值填充
+host_response_time,14877,55.936983004963146,11719,44.063016995036854,object,False,False,True,4,0.0003413260517108968,中 / Medium,创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill,创建二值变量标识缺失，并用众数填充
+host_response_rate,14877,55.936983004963146,11719,44.063016995036854,object,False,False,True,68,0.005802542879085246,中 / Medium,创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill,创建二值变量标识缺失，并用众数填充
+host_neighbourhood,13403,50.39479620995638,13193,49.60520379004362,object,False,False,True,92,0.006973394982187524,中 / Medium,创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill,创建二值变量标识缺失，并用众数填充
+host_acceptance_rate,13375,50.289517220634686,13221,49.710482779365314,object,False,False,True,101,0.007639361621662507,中 / Medium,创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill,创建二值变量标识缺失，并用众数填充
+host_about,12026,45.21732591367123,14570,54.78267408632877,object,False,False,True,11154,0.7655456417295813,中 / Medium,"创建""未知""类别 + 缺失指示变量 / Create ""Unknown"" Category + Missing Indicator","创建""未知""类别填充，并创建缺失指示变量"
+license,11680,43.91637840276733,14916,56.08362159723267,object,False,False,True,10426,0.698980960042907,中 / Medium,"创建""未知""类别 + 缺失指示变量 / Create ""Unknown"" Category + Missing Indicator","创建""未知""类别填充，并创建缺失指示变量"
+neighbourhood,10999,41.35584298390735,15597,58.64415701609265,object,False,False,True,74,0.004744502147848945,中 / Medium,众数填充 + 缺失指示变量 / Mode Fill + Missing Indicator,用众数填充，并创建缺失指示变量
+neighborhood_overview,10999,41.35584298390735,15597,58.64415701609265,object,False,False,True,12387,0.7941911906135796,中 / Medium,"创建""未知""类别 + 缺失指示变量 / Create ""Unknown"" Category + Missing Indicator","创建""未知""类别填充，并创建缺失指示变量"
+beds,4673,17.57031132501128,21923,82.42968867498872,float64,True,False,False,25,0.00114035487843817,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+price,4606,17.318393743420064,21990,82.68160625657994,object,False,False,True,747,0.0339699863574352,高 / High,众数填充 / Mode Fill,用最常见的值填充
+review_scores_checkin,3406,12.806437058204242,23190,87.19356294179576,float64,True,False,False,129,0.0055627425614489,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+review_scores_location,3406,12.806437058204242,23190,87.19356294179576,float64,True,False,False,135,0.005821474773609315,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+review_scores_value,3406,12.806437058204242,23190,87.19356294179576,float64,True,False,False,161,0.006942647692971108,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+review_scores_communication,3401,12.787637238682509,23195,87.2123627613175,float64,True,False,False,125,0.0053890924768269025,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+review_scores_accuracy,3398,12.77635734696947,23198,87.22364265303054,float64,True,False,False,130,0.005603931373394258,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+review_scores_cleanliness,3398,12.77635734696947,23198,87.22364265303054,float64,True,False,False,174,0.007500646607466161,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+first_review,3184,11.971725071439314,23412,88.02827492856069,object,False,False,True,3918,0.16735007688364942,高 / High,"创建""未知""类别 / Create ""Unknown"" Category","创建""未知""类别来填充缺失值"
+last_review,3184,11.971725071439314,23412,88.02827492856069,object,False,False,True,3057,0.1305740645822655,高 / High,"创建""未知""类别 / Create ""Unknown"" Category","创建""未知""类别来填充缺失值"
+review_scores_rating,3184,11.971725071439314,23412,88.02827492856069,float64,True,False,False,136,0.005808986844353323,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+reviews_per_month,3184,11.971725071439314,23412,88.02827492856069,float64,True,False,False,801,0.03421322398769862,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+host_location,1267,4.763874266807039,25329,95.23612573319296,object,False,False,True,762,0.030084093331754116,高 / High,众数填充 / Mode Fill,用最常见的值填充
+bedrooms,1204,4.526996540833208,25392,95.47300345916679,float64,True,False,False,16,0.000630119722747322,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+description,571,2.146939389381862,26025,97.85306061061814,object,False,False,True,25446,0.9777521613832854,高 / High,众数填充 / Mode Fill,用最常见的值填充
+has_availability,343,1.2896676191908558,26253,98.71033238080915,object,False,False,True,2,7.618176970251019e-05,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_is_superhost,120,0.45119566852158216,26476,99.54880433147842,object,False,False,True,2,7.554011179936546e-05,高 / High,众数填充 / Mode Fill,用最常见的值填充
+bathrooms_text,33,0.1240788088434351,26563,99.87592119115656,object,False,False,True,28,0.001054097805217784,高 / High,众数填充 / Mode Fill,用最常见的值填充
+name,30,0.11279891713039554,26566,99.88720108286961,object,False,False,True,23355,0.8791312203568471,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_thumbnail_url,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,20540,0.7725289604332781,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_total_listings_count,8,0.030079711234772145,26588,99.96992028876522,float64,True,False,False,63,0.002369489995486686,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+host_verifications,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,360,0.01353994283135249,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_since,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,4169,0.15680006017752368,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_has_profile_pic,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,2,7.522190461862494e-05,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_picture_url,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,20540,0.7725289604332781,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_identity_verified,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,2,7.522190461862494e-05,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_name,8,0.030079711234772145,26588,99.96992028876522,object,False,False,True,6618,0.24890928238302995,高 / High,众数填充 / Mode Fill,用最常见的值填充
+host_listings_count,8,0.030079711234772145,26588,99.96992028876522,float64,True,False,False,51,0.0019181585677749361,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+minimum_minimum_nights,7,0.026319747330425625,26589,99.97368025266958,float64,True,False,False,73,0.002745496257850991,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+maximum_maximum_nights,7,0.026319747330425625,26589,99.97368025266958,float64,True,False,False,146,0.005490992515701982,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+maximum_minimum_nights,7,0.026319747330425625,26589,99.97368025266958,float64,True,False,False,78,0.0029335439467448945,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+minimum_maximum_nights,7,0.026319747330425625,26589,99.97368025266958,float64,True,False,False,145,0.005453382977923201,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+minimum_nights_avg_ntm,3,0.011279891713039555,26593,99.98872010828696,float64,True,False,False,220,0.008272853758507878,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+maximum_nights_avg_ntm,3,0.011279891713039555,26593,99.98872010828696,float64,True,False,False,457,0.017184973489264094,高 / High,中位数/均值填充 / Median/Mean Fill,用中位数（对异常值稳健）或均值填充
+calendar_last_scraped,0,0.0,26596,100.0,object,False,False,True,3,0.00011279891713039555,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+property_type,0,0.0,26596,100.0,object,False,False,True,87,0.003271168596781471,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+calculated_host_listings_count_shared_rooms,0,0.0,26596,100.0,int64,True,False,False,7,0.00026319747330425626,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+calculated_host_listings_count_private_rooms,0,0.0,26596,100.0,int64,True,False,False,17,0.0006391938637389081,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+calculated_host_listings_count_entire_homes,0,0.0,26596,100.0,int64,True,False,False,22,0.000827192058956234,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+data_year,0,0.0,26596,100.0,int64,True,False,False,2,7.519927808693036e-05,高 / High,保留 / Keep (标识字段),这是标识字段，必须保留
+calculated_host_listings_count,0,0.0,26596,100.0,int64,True,False,False,24,0.0009023913370431644,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+availability_90,0,0.0,26596,100.0,int64,True,False,False,91,0.0034215671529553315,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+availability_60,0,0.0,26596,100.0,int64,True,False,False,61,0.0022935779816513763,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+availability_365,0,0.0,26596,100.0,int64,True,False,False,366,0.013761467889908258,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+availability_30,0,0.0,26596,100.0,int64,True,False,False,31,0.0011655888103474206,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+room_type,0,0.0,26596,100.0,object,False,False,True,4,0.00015039855617386073,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+scrape_id,0,0.0,26596,100.0,int64,True,False,False,2,7.519927808693036e-05,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+picture_url,0,0.0,26596,100.0,object,False,False,True,24210,0.9102872612422921,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+host_id,0,0.0,26596,100.0,int64,True,False,False,19776,0.7435704617235674,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+number_of_reviews_ltm,0,0.0,26596,100.0,int64,True,False,False,157,0.005903143329824034,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+number_of_reviews_l30d,0,0.0,26596,100.0,int64,True,False,False,45,0.0016919837569559332,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+number_of_reviews,0,0.0,26596,100.0,int64,True,False,False,621,0.02334937584599188,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+neighbourhood_cleansed,0,0.0,26596,100.0,object,False,False,True,22,0.000827192058956234,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+host_url,0,0.0,26596,100.0,object,False,False,True,19776,0.7435704617235674,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+minimum_nights,0,0.0,26596,100.0,int64,True,False,False,76,0.002857572567303354,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+maximum_nights,0,0.0,26596,100.0,int64,True,False,False,150,0.005639945856519777,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+longitude,0,0.0,26596,100.0,float64,True,False,False,14267,0.5364340502331177,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+listing_url,0,0.0,26596,100.0,object,False,False,True,23029,0.8658820875319597,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+latitude,0,0.0,26596,100.0,float64,True,False,False,10186,0.38298992329673637,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+last_scraped,0,0.0,26596,100.0,object,False,False,True,3,0.00011279891713039555,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+instant_bookable,0,0.0,26596,100.0,object,False,False,True,2,7.519927808693036e-05,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+id,0,0.0,26596,100.0,int64,True,False,False,23029,0.8658820875319597,高 / High,必须处理 / Must Handle (关键字段),关键字段，需要检查缺失原因并处理
+amenities,0,0.0,26596,100.0,object,False,False,True,24725,0.9296510753496766,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
+accommodates,0,0.0,26596,100.0,int64,True,False,False,17,0.0006391938637389081,无 / None,无需处理 / No Action Needed,字段无缺失值，无需处理
