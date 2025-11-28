@@ -306,7 +306,7 @@ def main():
     # Import with underscore prefix (2_model_training_final)
     import importlib.util
     spec = importlib.util.spec_from_file_location("model_training_final",
-                                                    CURRENT_DIR / "2_model_training_final.py")
+                                                    CURRENT_DIR / "2_model_training.py")
     model_training_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(model_training_module)
 

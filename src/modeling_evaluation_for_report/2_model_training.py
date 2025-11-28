@@ -88,7 +88,7 @@ def load_training_data() -> tuple[pd.DataFrame, Path]:
     if not train_path.exists():
         raise FileNotFoundError(
             f"Training data not found: {train_path}\n"
-            f"Please run: src/modeling_evaluation_for_report/1_feature_engineering_final.py"
+            f"Please run: src/modeling_evaluation_for_report/1_feature_engineering.py"
         )
 
     print("=" * 80)
