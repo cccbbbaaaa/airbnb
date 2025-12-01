@@ -48,7 +48,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
-# Import gradient boosting libraries
+# Import gradient boosting libraries / 导入梯度提升相关库
 try:
     import lightgbm as lgb
     LIGHTGBM_AVAILABLE = True
@@ -62,6 +62,13 @@ try:
 except ImportError:
     CATBOOST_AVAILABLE = False
     print("⚠️  Warning: CatBoost not available, will skip CatBoost model")
+
+try:
+    import xgboost as xgb
+    XGBOOST_AVAILABLE = True
+except ImportError:
+    XGBOOST_AVAILABLE = False
+    print("⚠️  Warning: XGBoost not available, will skip XGBoost model")
 
 # Path setup
 CURRENT_DIR = Path(__file__).resolve().parent

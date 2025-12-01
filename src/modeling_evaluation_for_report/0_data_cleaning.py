@@ -23,19 +23,17 @@ print("数据清洗 / Data Cleaning")
 print("=" * 80)
 
 # ============================================================================
-# 1. 加载数据和策略 / Load Data and Strategy
+# 1. 加载数据 / Load Data
 # ============================================================================
 
-print("\n1. 加载数据和策略 / Loading Data and Strategy...")
+print("\n1. 加载合并后数据 / Loading merged data...")
 
 try:
-    # 加载合并后的数据
-    merged_data = pd.read_excel(project_root / 'data' / 'merged' / 'listings_merged_2021_2025.xlsx')
+    # 加载合并后的数据（2021 + 2025）
+    merged_data = pd.read_excel(
+        project_root / 'data' / 'merged' / 'listings_merged_2021_2025.xlsx'
+    )
     print(f"  ✅ 合并后数据: {len(merged_data):,} 行 × {len(merged_data.columns)} 列")
-    
-    # 加载缺失值处理策略
-    strategy_df = pd.read_csv(project_root / 'charts' / 'data_merge' / 'missing_values_analysis_merged.csv')
-    print(f"  ✅ 处理策略: {len(strategy_df)} 个字段")
 except Exception as e:
     print(f"  ❌ 加载失败: {e}")
     raise
@@ -53,240 +51,246 @@ print(f"  ✅ 原始数据形状: {original_shape}")
 # 记录处理日志
 processing_log = []
 
-# ============================================================================
-# 3. 处理缺失值 / Handle Missing Values
-# ============================================================================
+"""
+3. 处理缺失值/ Handle Missing Values
+"""
 
 print("\n3. 处理缺失值 / Handling Missing Values...")
 
+
 def create_missing_indicator(df, col):
-    """创建缺失指示变量"""
-    indicator_col = f'{col}_is_missing'
+    """创建缺失指示变量 / Create missing indicator column"""
+    indicator_col = f"{col}_is_missing"
     df[indicator_col] = df[col].isna().astype(int)
     return df, indicator_col
 
+
 def fill_with_median(df, col):
-    """用中位数填充数值型字段"""
+    """用中位数优先、均值兜底、最后 0 填充数值型字段
+    Prefer median, fall back to mean, then 0 for numeric fields.
+    """
     median_val = df[col].median()
     if pd.isna(median_val):
-        # 如果中位数也是NaN，尝试用均值
         mean_val = df[col].mean()
         if pd.isna(mean_val):
             df[col] = df[col].fillna(0)
             return df, 0
-        else:
-            df[col] = df[col].fillna(mean_val)
-            return df, mean_val
-    else:
-        df[col] = df[col].fillna(median_val)
-        return df, median_val
+        df[col] = df[col].fillna(mean_val)
+        return df, mean_val
+    df[col] = df[col].fillna(median_val)
+    return df, median_val
+
 
 def fill_with_mode(df, col):
-    """用众数填充分类字段"""
+    """用众数填充分类字段（无众数时使用 'Unknown'）
+    Fill categorical field with mode; if no mode, use 'Unknown'.
+    """
     mode_val = df[col].mode()
     if len(mode_val) > 0:
         fill_value = mode_val[0]
         df[col] = df[col].fillna(fill_value)
         return df, fill_value
-    else:
-        # 如果没有众数，创建"未知"类别
-        df[col] = df[col].fillna('Unknown')
-        return df, 'Unknown'
+    df[col] = df[col].fillna("Unknown")
+    return df, "Unknown"
+
 
 def fill_with_unknown(df, col):
-    """用"未知"类别填充"""
-    df[col] = df[col].fillna('Unknown')
-    return df, 'Unknown'
+    """用 'Unknown' 填充缺失文本字段 / Fill missing text with 'Unknown'"""
+    df[col] = df[col].fillna("Unknown")
+    return df, "Unknown"
 
-# 按优先级处理字段
-strategy_df_sorted = strategy_df.sort_values('priority', ascending=False)
 
-for idx, row in strategy_df_sorted.iterrows():
-    col = row['column']
-    method = row['recommended_method']
-    missing_pct = row['missing_pct']
-    is_numeric = row['is_numeric']
-    is_categorical = row['is_categorical']
-    
-    # 跳过不存在的字段
-    if col not in cleaned_data.columns:
-        processing_log.append({
-            'column': col,
-            'action': '跳过 / Skipped',
-            'reason': '字段不存在 / Column does not exist'
-        })
-        continue
-    
-    # 检查是否有缺失值
-    if missing_pct == 0:
-        processing_log.append({
-            'column': col,
-            'action': '无需处理 / No Action',
-            'reason': '无缺失值 / No missing values'
-        })
-        continue
-    
-    # 根据推荐方法处理
-    try:
-        if '删除字段' in method or 'Drop Column' in method:
-            # 删除字段
-            cleaned_data = cleaned_data.drop(columns=[col])
-            processing_log.append({
-                'column': col,
-                'action': '删除字段 / Drop Column',
-                'reason': method,
-                'missing_pct': missing_pct
-            })
-            print(f"  ✅ 删除字段: {col} (缺失率: {missing_pct:.2f}%)")
-        
-        elif '保留' in method or 'Keep' in method:
-            # 保留字段，不处理
-            processing_log.append({
-                'column': col,
-                'action': '保留 / Keep',
-                'reason': method
-            })
-        
-        elif '必须处理' in method or 'Must Handle' in method:
-            # 关键字段，检查是否有缺失
-            if cleaned_data[col].isna().any():
-                # 对于id字段，不能有缺失值
-                if col == 'id':
-                    # 删除缺失id的记录
-                    before_count = len(cleaned_data)
-                    cleaned_data = cleaned_data.dropna(subset=[col])
-                    after_count = len(cleaned_data)
-                    processing_log.append({
-                        'column': col,
-                        'action': '删除缺失记录 / Drop Rows with Missing Values',
-                        'reason': '关键字段不能缺失 / Key field cannot be missing',
-                        'dropped_rows': before_count - after_count
-                    })
-                    print(f"  ⚠️  删除缺失{col}的记录: {before_count - after_count} 行")
-        
-        elif '创建缺失指示变量' in method or 'Missing Indicator' in method:
-            # 创建缺失指示变量
-            cleaned_data, indicator_col = create_missing_indicator(cleaned_data, col)
-            
-            # 然后填充缺失值
-            if '中位数' in method or 'Median' in method or '均值' in method or 'Mean' in method:
-                cleaned_data, fill_value = fill_with_median(cleaned_data, col)
-                processing_log.append({
-                    'column': col,
-                    'action': '创建缺失指示变量 + 中位数填充 / Missing Indicator + Median Fill',
-                    'indicator_column': indicator_col,
-                    'fill_value': fill_value,
-                    'missing_pct': missing_pct
-                })
-                print(f"  ✅ {col}: 创建缺失指示变量 + 中位数填充 ({fill_value:.2f})")
-            
-            elif '众数' in method or 'Mode' in method:
-                cleaned_data, fill_value = fill_with_mode(cleaned_data, col)
-                processing_log.append({
-                    'column': col,
-                    'action': '创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill',
-                    'indicator_column': indicator_col,
-                    'fill_value': fill_value,
-                    'missing_pct': missing_pct
-                })
-                print(f"  ✅ {col}: 创建缺失指示变量 + 众数填充 ({fill_value})")
-            
-            elif '未知' in method or 'Unknown' in method:
-                cleaned_data, fill_value = fill_with_unknown(cleaned_data, col)
-                processing_log.append({
-                    'column': col,
-                    'action': '创建缺失指示变量 + 未知类别填充 / Missing Indicator + Unknown Fill',
-                    'indicator_column': indicator_col,
-                    'fill_value': fill_value,
-                    'missing_pct': missing_pct
-                })
-                print(f"  ✅ {col}: 创建缺失指示变量 + 未知类别填充")
-        
-        elif '中位数' in method or 'Median' in method or '均值' in method or 'Mean' in method:
-            # 中位数/均值填充
-            cleaned_data, fill_value = fill_with_median(cleaned_data, col)
-            processing_log.append({
-                'column': col,
-                'action': '中位数/均值填充 / Median/Mean Fill',
-                'fill_value': fill_value,
-                'missing_pct': missing_pct
-            })
-            print(f"  ✅ {col}: 中位数填充 ({fill_value:.2f})")
-        
-        elif '众数' in method or 'Mode' in method:
-            # 众数填充
-            cleaned_data, fill_value = fill_with_mode(cleaned_data, col)
-            processing_log.append({
-                'column': col,
-                'action': '众数填充 / Mode Fill',
-                'fill_value': fill_value,
-                'missing_pct': missing_pct
-            })
-            print(f"  ✅ {col}: 众数填充 ({fill_value})")
-        
-        elif '未知' in method or 'Unknown' in method:
-            # 创建"未知"类别
-            cleaned_data, fill_value = fill_with_unknown(cleaned_data, col)
-            processing_log.append({
-                'column': col,
-                'action': '创建未知类别 / Create Unknown Category',
-                'fill_value': fill_value,
-                'missing_pct': missing_pct
-            })
-            print(f"  ✅ {col}: 创建未知类别")
-        
-        elif '前向填充' in method or 'Forward Fill' in method:
-            # 前向填充
-            cleaned_data[col] = cleaned_data[col].fillna(method='ffill')
-            processing_log.append({
-                'column': col,
-                'action': '前向填充 / Forward Fill',
-                'missing_pct': missing_pct
-            })
-            print(f"  ✅ {col}: 前向填充")
-        
-        elif '删除记录' in method or 'Drop Rows' in method:
-            # 删除缺失记录
-            before_count = len(cleaned_data)
-            cleaned_data = cleaned_data.dropna(subset=[col])
-            after_count = len(cleaned_data)
-            processing_log.append({
-                'column': col,
-                'action': '删除缺失记录 / Drop Rows',
-                'dropped_rows': before_count - after_count,
-                'missing_pct': missing_pct
-            })
-            print(f"  ⚠️  {col}: 删除缺失记录 ({before_count - after_count} 行)")
-        
-        else:
-            # 默认处理：根据字段类型
-            if is_numeric:
-                cleaned_data, fill_value = fill_with_median(cleaned_data, col)
-                processing_log.append({
-                    'column': col,
-                    'action': '默认处理：中位数填充 / Default: Median Fill',
-                    'fill_value': fill_value,
-                    'missing_pct': missing_pct
-                })
-                print(f"  ✅ {col}: 默认处理 - 中位数填充 ({fill_value:.2f})")
-            else:
-                cleaned_data, fill_value = fill_with_mode(cleaned_data, col)
-                processing_log.append({
-                    'column': col,
-                    'action': '默认处理：众数填充 / Default: Mode Fill',
-                    'fill_value': fill_value,
-                    'missing_pct': missing_pct
-                })
-                print(f"  ✅ {col}: 默认处理 - 众数填充 ({fill_value})")
-    
-    except Exception as e:
-        processing_log.append({
-            'column': col,
-            'action': '处理失败 / Processing Failed',
-            'error': str(e),
-            'missing_pct': missing_pct
-        })
-        print(f"  ❌ {col}: 处理失败 - {e}")
+# ------------------------- 3.1 删除完全缺失字段 -----------------------------
+# Drop columns that are completely missing (100% NaN)
+cols_to_drop = [
+    "calendar_updated",
+    "neighbourhood_group_cleansed",
+]
+
+for col in cols_to_drop:
+    if col in cleaned_data.columns:
+        cleaned_data = cleaned_data.drop(columns=[col])
+        processing_log.append(
+            {
+                "column": col,
+                "action": "删除字段 / Drop Column",
+                "reason": "字段完全缺失 / Column fully missing",
+            }
+        )
+        print(f"  ✅ 删除字段: {col} (完全缺失 / fully missing)")
+
+
+# ---------------------- 3.2 关键主键字段 / Key Fields ----------------------
+# id: 不能缺失，如有缺失则删除整行
+if "id" in cleaned_data.columns and cleaned_data["id"].isna().any():
+    before_count = len(cleaned_data)
+    cleaned_data = cleaned_data.dropna(subset=["id"])
+    after_count = len(cleaned_data)
+    dropped = before_count - after_count
+    processing_log.append(
+        {
+            "column": "id",
+            "action": "删除缺失记录 / Drop Rows with Missing Values",
+            "reason": "关键字段不能缺失 / Key field cannot be missing",
+            "dropped_rows": dropped,
+        }
+    )
+    print(f"  ⚠️  删除缺失 id 的记录: {dropped} 行 / rows")
+
+
+# ---------------------- 3.3 创建缺失指示变量 + 填充 ------------------------
+# 3.3.1 高缺失率数值型字段：指示变量 + 中位数/均值填充
+indicator_median_cols = [
+    "availability_eoy",
+    "estimated_occupancy_l365d",
+    "number_of_reviews_ly",
+]
+
+for col in indicator_median_cols:
+    if col in cleaned_data.columns:
+        cleaned_data, indicator_col = create_missing_indicator(cleaned_data, col)
+        cleaned_data, fill_value = fill_with_median(cleaned_data, col)
+        processing_log.append(
+            {
+                "column": col,
+                "action": "创建缺失指示变量 + 中位数/均值填充 / Missing Indicator + Median/Mean Fill",
+                "indicator_column": indicator_col,
+                "fill_value": fill_value,
+            }
+        )
+        print(
+            f"  ✅ {col}: 指示变量 {indicator_col} + 中位数/均值填充 ({fill_value})"
+        )
+
+
+# 3.3.2 高缺失率分类型字段：指示变量 + 众数填充
+indicator_mode_cols = [
+    "source",
+    "host_response_time",
+    "host_response_rate",
+    "host_neighbourhood",
+    "host_acceptance_rate",
+    "neighbourhood",
+]
+
+for col in indicator_mode_cols:
+    if col in cleaned_data.columns:
+        cleaned_data, indicator_col = create_missing_indicator(cleaned_data, col)
+        cleaned_data, fill_value = fill_with_mode(cleaned_data, col)
+        processing_log.append(
+            {
+                "column": col,
+                "action": "创建缺失指示变量 + 众数填充 / Missing Indicator + Mode Fill",
+                "indicator_column": indicator_col,
+                "fill_value": fill_value,
+            }
+        )
+        print(
+            f"  ✅ {col}: 指示变量 {indicator_col} + 众数填充 ({fill_value})"
+        )
+
+
+# 3.3.3 高缺失率文本型字段：指示变量 + 'Unknown' 填充
+indicator_unknown_cols = [
+    "host_about",
+    "license",
+    "neighborhood_overview",
+]
+
+for col in indicator_unknown_cols:
+    if col in cleaned_data.columns:
+        cleaned_data, indicator_col = create_missing_indicator(cleaned_data, col)
+        cleaned_data, fill_value = fill_with_unknown(cleaned_data, col)
+        processing_log.append(
+            {
+                "column": col,
+                "action": "创建缺失指示变量 + 'Unknown' 填充 / Missing Indicator + Unknown Fill",
+                "indicator_column": indicator_col,
+                "fill_value": fill_value,
+            }
+        )
+        print(f"  ✅ {col}: 指示变量 {indicator_col} + Unknown 填充")
+
+
+# ---------------------- 3.4 仅填充（不建指示变量）-------------------------
+# 3.4.1 数值评分与数值字段：中位数/均值填充
+median_fill_numeric_cols = [
+    "estimated_revenue_l365d",
+    "bathrooms",
+    "beds",
+    "review_scores_checkin",
+    "review_scores_location",
+    "review_scores_value",
+    "review_scores_communication",
+    "review_scores_accuracy",
+    "review_scores_cleanliness",
+    "review_scores_rating",
+    "reviews_per_month",
+    "bedrooms",
+    "host_total_listings_count",
+    "host_listings_count",
+    "minimum_minimum_nights",
+    "maximum_maximum_nights",
+    "maximum_minimum_nights",
+    "minimum_maximum_nights",
+    "minimum_nights_avg_ntm",
+    "maximum_nights_avg_ntm",
+]
+
+for col in median_fill_numeric_cols:
+    if col in cleaned_data.columns and cleaned_data[col].isna().any():
+        cleaned_data, fill_value = fill_with_median(cleaned_data, col)
+        processing_log.append(
+            {
+                "column": col,
+                "action": "中位数/均值填充 / Median/Mean Fill",
+                "fill_value": fill_value,
+            }
+        )
+        print(f"  ✅ {col}: 中位数/均值填充 ({fill_value})")
+
+
+# 3.4.2 低缺失率分类型/文本字段：众数填充
+mode_fill_categorical_cols = [
+    "price",
+    "host_location",
+    "description",
+    "has_availability",
+    "host_is_superhost",
+    "bathrooms_text",
+    "name",
+    "host_thumbnail_url",
+    "host_verifications",
+    "host_since",
+    "host_has_profile_pic",
+    "host_picture_url",
+    "host_identity_verified",
+    "host_name",
+]
+
+for col in mode_fill_categorical_cols:
+    if col in cleaned_data.columns and cleaned_data[col].isna().any():
+        cleaned_data, fill_value = fill_with_mode(cleaned_data, col)
+        processing_log.append(
+            {
+                "column": col,
+                "action": "众数填充 / Mode Fill",
+                "fill_value": fill_value,
+            }
+        )
+        print(f"  ✅ {col}: 众数填充 ({fill_value})")
+
+
+# ---------------------- 3.5 其余字段：仅记录为“无需处理” -------------------
+for col in cleaned_data.columns:
+    if cleaned_data[col].isna().sum() == 0:
+        processing_log.append(
+            {
+                "column": col,
+                "action": "无需处理 / No Action",
+                "reason": "无缺失值 / No missing values",
+            }
+        )
 
 # ============================================================================
 # 4. 验证清洗结果 / Validate Cleaning Results

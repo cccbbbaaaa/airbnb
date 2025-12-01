@@ -232,7 +232,7 @@ def perform_grid_search(X_train, X_test, y_train, y_test,
 
     if param_grid is None:
         param_grid = {
-            'iterations': [400, 550, 800],
+            'iterations': [400, 600, 800],
             'depth': [4, 6, 8],
             'learning_rate': [0.01, 0.03, 0.05],
             'l2_leaf_reg': [1, 3, 5],
