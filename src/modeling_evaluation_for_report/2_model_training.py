@@ -68,6 +68,7 @@ CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
 CHARTS_DIR = PROJECT_ROOT / "charts"
+MODEL_OUTPUT_DIR = CHARTS_DIR / "charts_for_report" / "modeling"
 
 # Plotting setup
 plt.style.use('seaborn-v0_8-darkgrid')
@@ -98,7 +99,9 @@ def load_training_data() -> tuple[pd.DataFrame, Path]:
     df = pd.read_csv(train_path)
     print(f"✅ Loaded: {len(df):,} rows × {len(df.columns)} columns")
 
-    return df, CHARTS_DIR / "model"
+    MODEL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    return df, MODEL_OUTPUT_DIR
 
 
 # ==================== DATA PREPARATION ====================

@@ -29,7 +29,7 @@ import time
 # ==================== PROJECT PATHS ====================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "processed"
-MODEL_DIR = PROJECT_ROOT / "charts" / "model"
+MODEL_DIR = PROJECT_ROOT / "charts" / "charts_for_report" / "modeling"
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
 

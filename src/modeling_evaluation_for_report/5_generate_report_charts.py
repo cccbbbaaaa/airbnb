@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import roc_curve, auc, confusion_matrix
+from sklearn.metrics import confusion_matrix
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -43,6 +43,7 @@ spec.loader.exec_module(model_training_module)
 
 load_training_data = model_training_module.load_training_data
 prepare_binary_dataset = model_training_module.prepare_binary_dataset
+train_models = model_training_module.main
 
 
 def create_output_dir():
@@ -52,94 +53,24 @@ def create_output_dir():
     return output_dir
 
 
-def plot_roc_curves(results_df, output_dir):
+def plot_roc_curves(roc_data, output_dir):
     """
-    Plot beautified ROC curves for all models
+    Plot beautified ROC curves for all models using precomputed ROC data
     """
     print("\n[1/6] Generating ROC curves...")
 
-    # Load data
-    df, _ = load_training_data()
-    X_train, X_test, y_train, y_test, _ = prepare_binary_dataset(df)
+    if not roc_data:
+        print("  ⚠️  Skipped: No ROC data available.")
+        return
 
-    # Train models and get probabilities
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.neural_network import MLPClassifier
-
-    try:
-        import lightgbm as lgb
-        LIGHTGBM_AVAILABLE = True
-    except:
-        LIGHTGBM_AVAILABLE = False
-
-    try:
-        from catboost import CatBoostClassifier
-        CATBOOST_AVAILABLE = True
-    except:
-        CATBOOST_AVAILABLE = False
-
-    models_data = []
-
-    # Logistic Regression
-    lr_model = LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42)
-    lr_pipe = StandardScaler()
-    X_train_scaled = lr_pipe.fit_transform(X_train)
-    X_test_scaled = lr_pipe.transform(X_test)
-    lr_model.fit(X_train_scaled, y_train)
-    lr_proba = lr_model.predict_proba(X_test_scaled)[:, 1]
-    models_data.append(('Logistic Regression', lr_proba))
-
-    # Random Forest
-    rf_model = RandomForestClassifier(n_estimators=600, max_depth=6, class_weight='balanced',
-                                       random_state=42, n_jobs=-1)
-    rf_model.fit(X_train, y_train)
-    rf_proba = rf_model.predict_proba(X_test)[:, 1]
-    models_data.append(('Random Forest', rf_proba))
-
-    # LightGBM
-    if LIGHTGBM_AVAILABLE:
-        scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
-        lgb_model = lgb.LGBMClassifier(n_estimators=600, max_depth=6, learning_rate=0.03,
-                                        scale_pos_weight=scale_pos_weight, random_state=42,
-                                        n_jobs=-1, verbose=-1)
-        lgb_model.fit(X_train, y_train)
-        lgb_proba = lgb_model.predict_proba(X_test)[:, 1]
-        models_data.append(('LightGBM', lgb_proba))
-
-    # CatBoost
-    if CATBOOST_AVAILABLE:
-        cat_model = CatBoostClassifier(iterations=600, depth=6, learning_rate=0.03,
-                                        l2_leaf_reg=3, auto_class_weights='Balanced',
-                                        random_seed=42, verbose=False)
-        cat_model.fit(X_train, y_train)
-        cat_proba = cat_model.predict_proba(X_test)[:, 1]
-        models_data.append(('CatBoost', cat_proba))
-
-    # MLP
-    scaler = StandardScaler()
-    X_train_scaled_mlp = scaler.fit_transform(X_train)
-    X_test_scaled_mlp = scaler.transform(X_test)
-    mlp_model = MLPClassifier(hidden_layer_sizes=(128, 64, 32), activation='relu',
-                               solver='adam', max_iter=300, early_stopping=True,
-                               random_state=42, verbose=False)
-    scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
-    sample_weights = np.where(y_train == 1, scale_pos_weight, 1.0)
-    mlp_model.fit(X_train_scaled_mlp, y_train, sample_weight=sample_weights)
-    mlp_proba = mlp_model.predict_proba(X_test_scaled_mlp)[:, 1]
-    models_data.append(('MLP', mlp_proba))
-
-    # Plot ROC curves
     fig, ax = plt.subplots(figsize=(10, 8))
 
     colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6']
 
-    for idx, (name, y_proba) in enumerate(models_data):
-        fpr, tpr, _ = roc_curve(y_test, y_proba)
-        roc_auc = auc(fpr, tpr)
-        ax.plot(fpr, tpr, label=f'{name} (AUC = {roc_auc:.4f})',
-                linewidth=2.5, color=colors[idx])
+    for idx, (name, (fpr, tpr, auc_score)) in enumerate(roc_data.items()):
+        color = colors[idx % len(colors)]
+        ax.plot(fpr, tpr, label=f'{name} (AUC = {auc_score:.4f})',
+                linewidth=2.5, color=color)
 
     # Diagonal line
     ax.plot([0, 1], [0, 1], 'k--', linewidth=1.5, alpha=0.5, label='Random Guess (AUC = 0.5000)')
@@ -202,21 +133,16 @@ def plot_model_comparison(results_df, output_dir):
     print(f"  ✅ Saved: {save_path}")
 
 
-def plot_confusion_matrix_heatmap(output_dir):
+def plot_confusion_matrix_heatmap(model_name, model, X_test, y_test, output_dir):
     """
-    Plot confusion matrix heatmap for CatBoost
+    Plot confusion matrix heatmap for the best model
     """
     print("\n[3/6] Generating confusion matrix...")
 
-    # Load data and train CatBoost
-    df, _ = load_training_data()
-    X_train, X_test, y_train, y_test, _ = prepare_binary_dataset(df)
+    if model is None:
+        print("  ⚠️  Skipped: Best model object not available.")
+        return
 
-    from catboost import CatBoostClassifier
-    model = CatBoostClassifier(iterations=600, depth=6, learning_rate=0.03,
-                                l2_leaf_reg=3, auto_class_weights='Balanced',
-                                random_seed=42, verbose=False)
-    model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
 
     # Compute confusion matrix
@@ -233,14 +159,15 @@ def plot_confusion_matrix_heatmap(output_dir):
 
     ax.set_xlabel('Predicted Label', fontsize=14, fontweight='bold')
     ax.set_ylabel('True Label', fontsize=14, fontweight='bold')
-    ax.set_title('CatBoost Confusion Matrix', fontsize=16, fontweight='bold', pad=15)
+    ax.set_title(f'{model_name} Confusion Matrix', fontsize=16, fontweight='bold', pad=15)
     ax.set_xticklabels(['<5-star', '5-star'], fontsize=12)
     ax.set_yticklabels(['<5-star', '5-star'], fontsize=12, rotation=0)
 
     # Add performance text
     accuracy = (cm[0,0] + cm[1,1]) / cm.sum()
     text = f'Accuracy: {accuracy:.2%}\nTrue Positive: {cm[1,1]}\nFalse Positive: {cm[0,1]}\nFalse Negative: {cm[1,0]}\nTrue Negative: {cm[0,0]}'
-    ax.text(2.5, 0.5, text, fontsize=11, bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    ax.text(2.5, 0.5, text, fontsize=11,
+            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
     plt.tight_layout()
     save_path = output_dir / "3_confusion_matrix.png"
@@ -249,24 +176,24 @@ def plot_confusion_matrix_heatmap(output_dir):
     print(f"  ✅ Saved: {save_path}")
 
 
-def plot_feature_importance(output_dir):
+def plot_feature_importance(model_name, model, feature_names, output_dir):
     """
-    Plot feature importance for CatBoost
+    Plot feature importance for the best model (if supported)
     """
     print("\n[4/6] Generating feature importance chart...")
 
-    # Load data and train CatBoost
-    df, _ = load_training_data()
-    X_train, X_test, y_train, y_test, feature_names = prepare_binary_dataset(df)
-
-    from catboost import CatBoostClassifier
-    model = CatBoostClassifier(iterations=600, depth=6, learning_rate=0.03,
-                                l2_leaf_reg=3, auto_class_weights='Balanced',
-                                random_seed=42, verbose=False)
-    model.fit(X_train, y_train)
+    if model is None:
+        print("  ⚠️  Skipped: Best model object not available.")
+        return
 
     # Get feature importance
-    importance = model.get_feature_importance()
+    if hasattr(model, "get_feature_importance"):
+        importance = model.get_feature_importance()
+    elif hasattr(model, "feature_importances_"):
+        importance = model.feature_importances_
+    else:
+        print(f"  ⚠️  Skipped: {model_name} does not expose feature importance.")
+        return
     feature_importance_df = pd.DataFrame({
         'feature': feature_names,
         'importance': importance
@@ -287,7 +214,7 @@ def plot_feature_importance(output_dir):
     ax.set_yticks(range(len(feature_importance_df)))
     ax.set_yticklabels(feature_importance_df['feature'], fontsize=10)
     ax.set_xlabel('Feature Importance Score', fontsize=13, fontweight='bold')
-    ax.set_title('CatBoost Feature Importance (Top 20)', fontsize=15, fontweight='bold', pad=15)
+    ax.set_title(f'{model_name} Feature Importance (Top 20)', fontsize=15, fontweight='bold', pad=15)
     ax.grid(axis='x', alpha=0.3, linestyle='--')
     ax.invert_yaxis()
 
@@ -462,12 +389,18 @@ def plot_bias_variance_tradeoff(results_df, output_dir):
         'MLP\n(Highest)'
     ], fontsize=10)
     ax.grid(True, alpha=0.3, linestyle='--')
-    ax.legend(loc='upper left', fontsize=11, frameon=True, shadow=True)
+    ax.legend(loc='lower right', fontsize=11, frameon=True, shadow=True)
+
+    # Extend y-axis to provide extra headroom for zone annotations
+    ymin, ymax = ax.get_ylim()
+    ax.set_ylim(ymin, ymax + (ymax - ymin) * 0.12)
+    ymin_new, ymax_new = ax.get_ylim()
+    zone_label_y = ymax_new - (ymax_new - ymin_new) * 0.05
 
     # Add zone annotations
-    ax.text(1, ax.get_ylim()[1] * 0.95, 'Underfitting\n(High Bias)',
+    ax.text(1, zone_label_y, 'Underfitting\n(High Bias)',
            ha='center', fontsize=10, color='blue', alpha=0.7, fontweight='bold')
-    ax.text(5, ax.get_ylim()[1] * 0.95, 'Overfitting Risk\n(High Variance)',
+    ax.text(5, zone_label_y, 'Overfitting Risk\n(High Variance)',
            ha='center', fontsize=10, color='red', alpha=0.7, fontweight='bold')
 
     plt.tight_layout()
@@ -530,7 +463,7 @@ def plot_catboost_fitting_graph(output_dir):
     print("\n[9/9] Generating CatBoost fitting graph...")
 
     # Load actual test results
-    model_dir = PROJECT_ROOT / "charts" / "model"
+    model_dir = output_dir
     results_path = model_dir / "catboost_iteration_comparison.csv"
 
     if not results_path.exists():
@@ -665,15 +598,19 @@ def main():
     output_dir = create_output_dir()
     print(f"\n输出目录: {output_dir}")
 
-    # Load results
-    results_path = PROJECT_ROOT / "charts" / "model" / "model_comparison_results.csv"
-    results_df = pd.read_csv(results_path)
+    # Train models once and reuse outputs
+    results_df, roc_data, best_model = train_models()
+
+    # Prepare evaluation datasets (same split as training script)
+    df, _ = load_training_data()
+    _, X_test, _, y_test, feature_names = prepare_binary_dataset(df)
+    best_model_name = results_df.iloc[0]['model']
 
     # Generate all charts (9 total)
-    plot_roc_curves(results_df, output_dir)
+    plot_roc_curves(roc_data, output_dir)
     plot_model_comparison(results_df, output_dir)
-    plot_confusion_matrix_heatmap(output_dir)
-    plot_feature_importance(output_dir)
+    plot_confusion_matrix_heatmap(best_model_name, best_model, X_test, y_test, output_dir)
+    plot_feature_importance(best_model_name, best_model, feature_names, output_dir)
     plot_precision_recall_tradeoff(results_df, output_dir)
     plot_training_time_vs_performance(results_df, output_dir)
     plot_bias_variance_tradeoff(results_df, output_dir)
